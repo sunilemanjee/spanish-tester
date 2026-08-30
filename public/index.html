@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Spanish Tester</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0f0f13; --surface: #1a1a24; --surface2: #22222f; --border: #2e2e42;
+      --accent: #7c6af7; --accent-hover: #9485ff;
+      --green: #3ecf8e; --green-bg: rgba(62,207,142,.1); --green-border: rgba(62,207,142,.3);
+      --red: #f87171; --red-bg: rgba(248,113,113,.1); --red-border: rgba(248,113,113,.3);
+      --amber: #f0a030; --amber-bg: rgba(240,160,48,.1); --amber-border: rgba(240,160,48,.3);
+      --text: #e8e8f0; --muted: #7878a0; --radius: 12px;
+    }
+    body { background:var(--bg); color:var(--text); font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; min-height:100vh; display:flex; flex-direction:column; align-items:center; padding:24px 16px 48px; }
+
+    header { width:100%; max-width:620px; display:flex; align-items:center; justify-content:space-between; margin-bottom:20px; }
+    h1 { font-size:1.2rem; font-weight:700; letter-spacing:-.02em; }
+    h1 span { color:var(--accent); }
+    .app-tabs { display:flex; background:var(--surface2); border:1px solid var(--border); border-radius:8px; overflow:hidden; }
+    .app-tab { padding:7px 18px; font-size:.82rem; font-weight:600; border:none; background:transparent; color:var(--muted); cursor:pointer; transition:all .15s; }
+    .app-tab.active { background:var(--accent); color:#fff; }
+
+    .dir-row { width:100%; max-width:620px; display:flex; align-items:center; gap:10px; margin-bottom:16px; min-height:34px; flex-wrap:wrap; }
+    .dir-toggle { display:flex; background:var(--surface2); border:1px solid var(--border); border-radius:8px; overflow:hidden; }
+    .dir-btn { padding:5px 14px; font-size:.78rem; font-weight:600; border:none; background:transparent; color:var(--muted); cursor:pointer; transition:all .15s; }
+    .dir-btn.active { background:var(--surface); color:var(--text); }
+
+    .retry-chip { padding:5px 13px; font-size:.78rem; font-weight:700; border:1.5px solid var(--amber-border); background:var(--amber-bg); color:var(--amber); border-radius:8px; cursor:pointer; transition:all .15s; white-space:nowrap; }
+    .retry-chip:hover { background:rgba(240,160,48,.18); }
+    .clear-wrong { padding:4px 10px; font-size:.72rem; font-weight:600; border:1px solid var(--border); background:transparent; color:var(--muted); border-radius:6px; cursor:pointer; margin-left:auto; }
+    .clear-wrong:hover { color:var(--red); border-color:var(--red-border); }
+
+    .score-bar { width:100%; max-width:620px; display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-bottom:16px; }
+    .score-card { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:11px 10px; text-align:center; }
+    .score-card .lbl { font-size:.63rem; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); margin-bottom:3px; }
+    .score-card .val { font-size:1.45rem; font-weight:700; }
+    .score-card.c .val { color:var(--green); }
+    .score-card.w .val { color:var(--red); }
+    .score-card.r .val { color:var(--accent); }
+    .score-card.b .val { color:var(--amber); }
+
+    .prog-wrap { width:100%; max-width:620px; height:3px; background:var(--surface2); border-radius:2px; margin-bottom:18px; overflow:hidden; }
+    .prog-fill { height:100%; background:var(--accent); border-radius:2px; transition:width .35s ease; width:0%; }
+
+    .quiz-card { width:100%; max-width:620px; background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:26px 28px 22px; margin-bottom:14px; }
+    .retry-banner { background:var(--amber-bg); border:1px solid var(--amber-border); color:var(--amber); font-size:.78rem; font-weight:600; padding:8px 13px; border-radius:8px; margin-bottom:16px; display:none; }
+    .retry-banner.show { display:block; }
+    .card-meta { font-size:.7rem; color:var(--muted); text-transform:uppercase; letter-spacing:.08em; margin-bottom:7px; }
+    .card-word { font-size:2.4rem; font-weight:800; letter-spacing:-.04em; margin-bottom:22px; line-height:1.1; }
+
+    .field-input { width:100%; background:var(--surface2); border:1.5px solid var(--border); border-radius:8px; color:var(--text); font-size:.95rem; padding:9px 13px; outline:none; transition:border-color .15s; }
+    .field-input:focus { border-color:var(--accent); }
+    .field-input.ok  { border-color:var(--green); background:var(--green-bg); }
+    .field-input.bad { border-color:var(--red);   background:var(--red-bg); }
+    .field-input:disabled { cursor:default; }
+
+    .prev-wrong { font-size:.74rem; color:var(--amber); margin-top:4px; display:none; }
+    .prev-wrong.show { display:block; }
+
+    .single-row { display:flex; gap:10px; }
+    .feedback { margin-top:13px; padding:10px 14px; border-radius:8px; font-size:.87rem; font-weight:500; display:none; }
+    .feedback.show { display:block; }
+    .feedback.ok  { background:var(--green-bg); color:var(--green); border:1px solid var(--green-border); }
+    .feedback.bad { background:var(--red-bg);   color:var(--red);   border:1px solid var(--red-border); }
+
+    .english-row { display:flex; align-items:flex-start; gap:12px; margin-bottom:18px; padding-bottom:18px; border-bottom:1px solid var(--border); }
+    .row-label { font-size:.8rem; font-weight:600; color:var(--muted); width:140px; flex-shrink:0; padding-top:10px; }
+    .row-fields { flex:1; }
+    .conj-grid { display:flex; flex-direction:column; gap:8px; margin-bottom:18px; }
+    .conj-row { display:grid; grid-template-columns:140px 1fr; align-items:flex-start; gap:12px; }
+    .pronoun-lbl { font-size:.82rem; font-weight:600; color:var(--muted); padding-top:10px; }
+    .hint { font-size:.73rem; color:var(--green); margin-top:3px; display:none; }
+    .hint.show { display:block; }
+    .verb-banner { margin-top:13px; padding:10px 14px; border-radius:8px; font-size:.85rem; font-weight:500; display:none; }
+    .verb-banner.show { display:block; }
+    .verb-banner.ok  { background:var(--green-bg); color:var(--green); border:1px solid var(--green-border); }
+    .verb-banner.bad { background:var(--red-bg);   color:var(--red);   border:1px solid var(--red-border); }
+
+    .action-row { display:flex; justify-content:flex-end; gap:10px; margin-top:6px; }
+    .btn { padding:9px 19px; border:none; border-radius:8px; font-size:.87rem; font-weight:600; cursor:pointer; transition:all .15s; }
+    .btn-primary { background:var(--accent); color:#fff; }
+    .btn-primary:hover { background:var(--accent-hover); }
+    .btn-primary:disabled { opacity:.4; cursor:default; }
+    .btn-outline { background:transparent; color:var(--text); border:1.5px solid var(--border); }
+    .btn-outline:hover { border-color:var(--accent); color:var(--accent); }
+    .btn-dispute { background:transparent; color:var(--amber); border:1.5px solid var(--amber-border); }
+    .btn-dispute:hover { background:var(--amber-bg); }
+
+    .finish { width:100%; max-width:620px; background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:38px 32px; text-align:center; display:none; margin-bottom:14px; }
+    .finish.show { display:block; }
+    .finish-emoji { font-size:2.8rem; margin-bottom:10px; }
+    .finish h2 { font-size:1.6rem; font-weight:700; margin-bottom:4px; }
+    .finish-pct { font-size:3.4rem; font-weight:800; color:var(--accent); margin:14px 0 4px; }
+    .finish-sub { color:var(--muted); font-size:.87rem; margin-bottom:4px; }
+    .finish-fields { color:var(--muted); font-size:.8rem; margin-bottom:6px; }
+    .finish-wrong-note { font-size:.82rem; color:var(--amber); margin-bottom:22px; }
+    .finish-acts { display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
+
+    .upload-section { width:100%; max-width:620px; }
+    details.upload-card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:16px 20px; }
+    details.upload-card summary { cursor:pointer; font-size:.81rem; font-weight:600; color:var(--muted); user-select:none; list-style:none; display:flex; align-items:center; gap:8px; }
+    details.upload-card summary::before { content:'▶'; font-size:.57rem; transition:transform .15s; }
+    details.upload-card[open] summary::before { transform:rotate(90deg); }
+    .upload-body { margin-top:14px; }
+    .upload-body p { font-size:.77rem; color:var(--muted); margin-bottom:8px; line-height:1.55; }
+    .upload-body pre { background:var(--surface2); border:1px solid var(--border); border-radius:6px; padding:9px 13px; font-size:.73rem; color:var(--accent); overflow-x:auto; margin-bottom:12px; }
+    .upload-row { display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
+    input[type="file"] { flex:1; min-width:0; font-size:.81rem; color:var(--text); background:var(--surface2); border:1.5px solid var(--border); border-radius:8px; padding:6px 10px; cursor:pointer; }
+    input[type="file"]::file-selector-button { background:var(--surface); color:var(--text); border:1px solid var(--border); border-radius:5px; padding:3px 9px; margin-right:8px; cursor:pointer; font-size:.77rem; }
+    .upload-status { font-size:.79rem; margin-top:8px; padding:7px 12px; border-radius:6px; display:none; }
+    .upload-status.show { display:block; }
+    .upload-status.ok  { background:var(--green-bg); color:var(--green); }
+    .upload-status.err { background:var(--red-bg);   color:var(--red); }
+    .loading { color:var(--muted); text-align:center; padding:48px 0; font-size:.9rem; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Spanish <span>↔</span> English</h1>
+  <div class="app-tabs">
+    <button class="app-tab active" id="tab-vocab">Vocabulary</button>
+    <button class="app-tab" id="tab-verbs">Verbs</button>
+  </div>
+</header>
+
+<div class="dir-row" id="dir-row">
+  <div class="dir-toggle">
+    <button class="dir-btn active" id="dir-es-en">ES → EN</button>
+    <button class="dir-btn" id="dir-en-es">EN → ES</button>
+  </div>
+  <button class="retry-chip" id="retry-btn" style="display:none">Retry Wrong (0)</button>
+  <button class="clear-wrong" id="clear-wrong-btn" style="display:none">Clear wrong list</button>
+  <button class="clear-wrong" id="global-restart-btn">↺ Restart</button>
+</div>
+
+<div class="score-bar">
+  <div class="score-card c"><div class="lbl">Mastered</div><div class="val" id="sc-c">0</div></div>
+  <div class="score-card w"><div class="lbl">Misses</div><div class="val" id="sc-w">0</div></div>
+  <div class="score-card r"><div class="lbl">To Go</div><div class="val" id="sc-r">—</div></div>
+  <div class="score-card b"><div class="lbl">1st Try</div><div class="val" id="sc-b">—</div></div>
+</div>
+
+<div class="prog-wrap"><div class="prog-fill" id="prog-fill"></div></div>
+
+<!-- ══ VOCAB CARD ══ -->
+<div class="quiz-card" id="vocab-card">
+  <div class="loading" id="vocab-loading">Loading vocabulary…</div>
+  <div id="vocab-content" style="display:none">
+    <div class="retry-banner" id="vocab-retry-banner"></div>
+    <div class="card-meta" id="vocab-meta"></div>
+    <div class="card-word" id="vocab-word"></div>
+    <div class="single-row">
+      <input class="field-input" type="text" id="vocab-input" placeholder="Type translation…"
+             autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+      <button class="btn btn-primary" id="vocab-check">Check</button>
+    </div>
+    <div class="prev-wrong" id="vocab-prev-wrong"></div>
+    <div class="feedback" id="vocab-feedback"></div>
+    <div class="action-row" id="vocab-next-row" style="display:none">
+      <button class="btn btn-dispute" id="vocab-dispute" style="display:none">That's actually right</button>
+      <button class="btn btn-outline" id="vocab-next">Next →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ VERB CARD ══ -->
+<div class="quiz-card" id="verb-card" style="display:none">
+  <div class="loading" id="verb-loading">Loading verbs…</div>
+  <div id="verb-content" style="display:none">
+    <div class="retry-banner" id="verb-retry-banner"></div>
+    <div class="card-meta" id="verb-meta"></div>
+    <div class="card-word" id="verb-word"></div>
+    <div class="english-row">
+      <div class="row-label">English meaning</div>
+      <div class="row-fields">
+        <input class="field-input" type="text" id="f-english" placeholder="e.g. to dance"
+               autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+        <div class="prev-wrong" id="pw-english"></div>
+        <div class="hint" id="h-english"></div>
+      </div>
+    </div>
+    <div class="conj-grid" id="conj-grid"></div>
+    <div class="verb-banner" id="verb-banner"></div>
+    <div class="action-row">
+      <button class="btn btn-dispute" id="verb-dispute" style="display:none">That's actually right</button>
+      <button class="btn btn-outline" id="verb-skip">Skip</button>
+      <button class="btn btn-primary" id="verb-check">Check Verb</button>
+      <button class="btn btn-primary" id="verb-next" style="display:none">Next Verb →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ FINISH ══ -->
+<div class="finish" id="finish-screen">
+  <div class="finish-emoji" id="fin-emoji">🎉</div>
+  <h2>Quiz Complete!</h2>
+  <div class="finish-pct" id="fin-pct">—</div>
+  <p class="finish-sub" id="fin-sub"></p>
+  <p class="finish-fields" id="fin-fields"></p>
+  <p class="finish-wrong-note" id="fin-wrong-note"></p>
+  <div class="finish-acts">
+    <button class="btn btn-primary" id="restart-btn">Restart</button>
+    <button class="btn btn-outline" id="fin-retry-btn" style="display:none">Retry Wrong (0)</button>
+  </div>
+</div>
+
+<div class="upload-section" id="upload-section"></div>
+
+<script>
+const PRONOUNS = [
+  {key:'yo',       label:'yo'},
+  {key:'tu',       label:'tú'},
+  {key:'el',       label:'él / ella / Ud.'},
+  {key:'nosotros', label:'nosotros / as'},
+  {key:'vosotros', label:'vosotros / as'},
+  {key:'ellos',    label:'ellos / ellas / Uds.'},
+];
+
+// ── state ──────────────────────────────────────────────
+let appMode = 'vocab', vocabDir = 'es-en';
+let vocabPairs = [], verbsList = [];
+let queue = [], checked = false, isRetry = false;
+let sc = 0, sw = 0, tfCorrect = 0, tfTotal = 0;
+let mastered = new Set(), sessionTotal = 0, firstTryCorrect = 0;
+let lastWrongVocabPair = null, lastVocabWasFirst = false;
+let lastWrongVerb = null, lastVerbWasFirst = false;
+
+const $ = id => document.getElementById(id);
+
+function normalize(s) {
+  return s.toLowerCase().trim()
+    .normalize('NFD').replace(/[̀-ͯ]/g, '')  // strip diacritics
+    .replace(/[^a-z0-9\s]/g, '')              // strip punctuation / special chars
+    .replace(/\s+/g, ' ').trim();             // collapse whitespace
+}
+function shuffle(arr) {
+  const a=[...arr];
+  for (let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}
+  return a;
+}
+
+// ── wrong answer storage ───────────────────────────────
+function getWrong(mode)        { return JSON.parse(localStorage.getItem('wrong-'+mode)||'[]'); }
+function setWrong(mode, items) { localStorage.setItem('wrong-'+mode, JSON.stringify(items)); }
+
+function saveWrongVocab(pair, userAnswer) {
+  const items = getWrong('vocab');
+  const idx = items.findIndex(x => x.pair.spanish === pair.spanish);
+  const entry = { pair, userAnswer, direction: vocabDir };
+  if (idx >= 0) items[idx] = entry; else items.push(entry);
+  setWrong('vocab', items);
+}
+function removeWrongVocab(spanish) {
+  setWrong('vocab', getWrong('vocab').filter(x => x.pair.spanish !== spanish));
+}
+function saveWrongVerb(verb, userAnswers) {
+  const items = getWrong('verbs');
+  const idx = items.findIndex(x => x.verb.infinitive === verb.infinitive);
+  const entry = { verb, userAnswers };
+  if (idx >= 0) items[idx] = entry; else items.push(entry);
+  setWrong('verbs', items);
+}
+function removeWrongVerb(infinitive) {
+  setWrong('verbs', getWrong('verbs').filter(x => x.verb.infinitive !== infinitive));
+}
+
+// ── retry / clear buttons ──────────────────────────────
+function updateRetryUI() {
+  const count = getWrong(appMode).length;
+  const btn = $('retry-btn');
+  const clr = $('clear-wrong-btn');
+  if (count > 0) {
+    btn.style.display = ''; btn.textContent = `Retry Wrong (${count})`;
+    clr.style.display = '';
+  } else {
+    btn.style.display = 'none';
+    clr.style.display = 'none';
+  }
+  // finish screen retry button
+  const fb = $('fin-retry-btn');
+  if (count > 0) { fb.style.display=''; fb.textContent=`Retry Wrong (${count})`; }
+  else fb.style.display='none';
+}
+
+$('retry-btn').addEventListener('click', () => {
+  if (appMode==='vocab') startVocabRetry(); else startVerbRetry();
+});
+$('fin-retry-btn').addEventListener('click', () => {
+  if (appMode==='vocab') startVocabRetry(); else startVerbRetry();
+});
+$('clear-wrong-btn').addEventListener('click', () => {
+  setWrong(appMode, []); updateRetryUI();
+});
+$('global-restart-btn').addEventListener('click', () => {
+  setWrong(appMode, []);
+  if (appMode==='vocab') startVocab(); else startVerbs();
+});
+
+// ── score UI ───────────────────────────────────────────
+function bestKey(mode) { return 'best-'+mode; }
+function getBest(mode) { return localStorage.getItem(bestKey(mode)); }
+function saveBest(mode, pct) {
+  const prev=parseFloat(getBest(mode)||'0');
+  if (pct>prev) localStorage.setItem(bestKey(mode), pct.toFixed(1));
+}
+function updateScore() {
+  $('sc-c').textContent=mastered.size;
+  $('sc-w').textContent=sw;
+  $('sc-r').textContent=sessionTotal-mastered.size;
+  $('sc-b').textContent=sessionTotal?firstTryCorrect+'/'+sessionTotal:'—';
+  $('prog-fill').style.width=sessionTotal?(mastered.size/sessionTotal*100)+'%':'0%';
+  // keep meta text live after each check (showVocabWord/showVerbWord also set it at word start)
+  const metaText=`Mastered ${mastered.size} of ${sessionTotal} — ${queue.length} in queue`;
+  if (appMode==='vocab' && $('vocab-meta')) $('vocab-meta').textContent=metaText;
+  if (appMode==='verbs' && $('verb-meta'))  $('verb-meta').textContent=metaText;
+}
+
+// ── tab switching ──────────────────────────────────────
+function switchMode(mode) {
+  appMode=mode; isRetry=false;
+  $('tab-vocab').classList.toggle('active',mode==='vocab');
+  $('tab-verbs').classList.toggle('active',mode==='verbs');
+  $('dir-row').style.visibility=mode==='vocab'?'visible':'hidden';
+  $('vocab-card').style.display=mode==='vocab'?'':'none';
+  $('verb-card').style.display=mode==='verbs'?'':'none';
+  $('finish-screen').classList.remove('show');
+  sc=0;sw=0;tfCorrect=0;tfTotal=0;mastered=new Set();sessionTotal=0;firstTryCorrect=0;
+  renderUpload(mode); updateRetryUI();
+  if (mode==='vocab'&&vocabPairs.length) startVocab();
+  if (mode==='verbs'&&verbsList.length)  startVerbs();
+}
+$('tab-vocab').addEventListener('click',()=>switchMode('vocab'));
+$('tab-verbs').addEventListener('click',()=>switchMode('verbs'));
+
+// ══════════════════════════════════════════════════════
+//  VOCAB MODE
+// ══════════════════════════════════════════════════════
+async function loadVocab() {
+  try {
+    const res=await fetch('/api/words'); const data=await res.json();
+    if (data.error) throw new Error(data.error);
+    vocabPairs=data.pairs;
+    $('vocab-loading').style.display='none'; $('vocab-content').style.display='block';
+    if (appMode==='vocab') startVocab();
+  } catch(err) { $('vocab-loading').textContent='Error: '+err.message; }
+}
+
+function startVocab() {
+  sc=0;sw=0;checked=false;isRetry=false;
+  mastered=new Set();firstTryCorrect=0;
+  queue=shuffle(vocabPairs);sessionTotal=queue.length;
+  $('finish-screen').classList.remove('show');
+  $('vocab-card').style.display='';
+  $('vocab-retry-banner').className='retry-banner';
+  updateScore(); updateRetryUI(); showVocabWord();
+}
+
+function startVocabRetry() {
+  const wrongs=getWrong('vocab');
+  if (!wrongs.length) return;
+  sc=0;sw=0;checked=false;isRetry=true;
+  mastered=new Set();firstTryCorrect=0;
+  queue=shuffle(wrongs.map(x=>x.pair));sessionTotal=queue.length;
+  $('finish-screen').classList.remove('show');
+  $('vocab-card').style.display='';
+  $('vocab-retry-banner').textContent=`Reviewing ${wrongs.length} wrong answer${wrongs.length>1?'s':('')} — must get all right`;
+  $('vocab-retry-banner').className='retry-banner show';
+  updateScore(); showVocabWord();
+}
+
+function showVocabWord() {
+  if (!queue.length) { showFinish(); return; }
+  checked=false;
+  const pair=queue[0];
+  $('vocab-meta').textContent=`Mastered ${mastered.size} of ${sessionTotal} — ${queue.length} in queue`;
+  $('vocab-word').textContent=vocabDir==='es-en'?pair.spanish:pair.english;
+
+  lastWrongVocabPair=null;
+  $('vocab-dispute').style.display='none';
+  const inp=$('vocab-input');
+  inp.value=''; inp.className='field-input'; inp.disabled=false;
+  $('vocab-feedback').className='feedback';
+  $('vocab-next-row').style.display='none';
+  $('vocab-check').disabled=false;
+
+  // always show previous wrong answer if one exists for this item
+  const pw=$('vocab-prev-wrong');
+  const wrongItem=getWrong('vocab').find(x=>x.pair.spanish===pair.spanish);
+  if (wrongItem) {
+    pw.textContent=`Previously you said: "${wrongItem.userAnswer}"`;
+    pw.className='prev-wrong show';
+  } else { pw.className='prev-wrong'; }
+
+  updateScore(); inp.focus();
+}
+
+function checkVocabWord() {
+  if (checked) return; checked=true;
+  const pair=queue[0]; queue.shift();
+  const correct=vocabDir==='es-en'?pair.english:pair.spanish;
+  const inp=$('vocab-input');
+  const userAnswer=inp.value.trim();
+  const isOk=normalize(userAnswer)===normalize(correct);
+  const wasFirstAttempt=!getWrong('vocab').find(x=>x.pair.spanish===pair.spanish);
+  inp.disabled=true; $('vocab-check').disabled=true;
+  if (isOk) {
+    mastered.add(pair.spanish);
+    if (wasFirstAttempt) firstTryCorrect++;
+    inp.classList.add('ok');
+    $('vocab-feedback').textContent='✓ Correct!';
+    $('vocab-feedback').className='feedback ok show';
+    removeWrongVocab(pair.spanish);
+    lastWrongVocabPair=null;
+    $('vocab-dispute').style.display='none';
+  } else {
+    if (wasFirstAttempt) sw++;
+    inp.classList.add('bad');
+    $('vocab-feedback').textContent=`✗ Wrong. Answer: "${correct}" — you'll see this again`;
+    $('vocab-feedback').className='feedback bad show';
+    saveWrongVocab(pair, userAnswer);
+    queue.push(pair); // re-insert at end: must get it right to finish
+    lastWrongVocabPair=pair; lastVocabWasFirst=wasFirstAttempt;
+    $('vocab-dispute').style.display='';
+  }
+  $('vocab-next-row').style.display='flex';
+  $('vocab-next').textContent=queue.length?'Next →':'All Done!';
+  updateScore(); updateRetryUI();
+}
+
+$('vocab-check').addEventListener('click', checkVocabWord);
+$('vocab-next').addEventListener('click', ()=>{ if (!queue.length) showFinish(); else showVocabWord(); });
+$('vocab-input').addEventListener('keydown', e=>{
+  if (e.key==='Enter') {
+    if (!checked) checkVocabWord();
+    else if ($('vocab-next-row').style.display!=='none') { if (!queue.length) showFinish(); else showVocabWord(); }
+  }
+});
+$('dir-es-en').addEventListener('click',()=>{ if(vocabDir!=='es-en'){vocabDir='es-en';$('dir-es-en').classList.add('active');$('dir-en-es').classList.remove('active');startVocab();} });
+$('dir-en-es').addEventListener('click',()=>{ if(vocabDir!=='en-es'){vocabDir='en-es';$('dir-en-es').classList.add('active');$('dir-es-en').classList.remove('active');startVocab();} });
+
+$('vocab-dispute').addEventListener('click', ()=>{
+  if (!lastWrongVocabPair) return;
+  if (lastVocabWasFirst) sw--;
+  queue.pop(); // item was pushed to end in checkVocabWord
+  mastered.add(lastWrongVocabPair.spanish);
+  if (lastVocabWasFirst) firstTryCorrect++;
+  removeWrongVocab(lastWrongVocabPair.spanish);
+  lastWrongVocabPair=null;
+  $('vocab-dispute').style.display='none';
+  $('vocab-feedback').textContent='✓ Marked as correct!';
+  $('vocab-feedback').className='feedback ok show';
+  $('vocab-input').classList.remove('bad'); $('vocab-input').classList.add('ok');
+  $('vocab-next').textContent=queue.length?'Next →':'All Done!';
+  updateScore(); updateRetryUI();
+});
+
+// ══════════════════════════════════════════════════════
+//  VERB MODE
+// ══════════════════════════════════════════════════════
+async function loadVerbs() {
+  try {
+    const res=await fetch('/api/verbs'); const data=await res.json();
+    if (data.error) throw new Error(data.error);
+    verbsList=data.verbs;
+    buildConjGrid();
+    $('verb-loading').style.display='none'; $('verb-content').style.display='block';
+    if (appMode==='verbs') startVerbs();
+  } catch(err) { $('verb-loading').textContent='Error: '+err.message; }
+}
+
+function buildConjGrid() {
+  const grid=$('conj-grid'); grid.innerHTML='';
+  PRONOUNS.forEach(({key,label})=>{
+    const row=document.createElement('div'); row.className='conj-row';
+    const lbl=document.createElement('div'); lbl.className='pronoun-lbl'; lbl.textContent=label;
+    const wrap=document.createElement('div'); wrap.className='row-fields';
+    const inp=document.createElement('input');
+    inp.className='field-input'; inp.type='text'; inp.id='f-'+key;
+    inp.placeholder=label.split('/')[0].trim()+'…';
+    inp.setAttribute('autocomplete','off'); inp.setAttribute('autocorrect','off');
+    inp.setAttribute('autocapitalize','off'); inp.setAttribute('spellcheck','false');
+    const pw=document.createElement('div'); pw.className='prev-wrong'; pw.id='pw-'+key;
+    const hint=document.createElement('div'); hint.className='hint'; hint.id='h-'+key;
+    wrap.appendChild(inp); wrap.appendChild(pw); wrap.appendChild(hint);
+    row.appendChild(lbl); row.appendChild(wrap); grid.appendChild(row);
+  });
+}
+
+function allVerbFields() {
+  return [
+    {key:'english',inp:$('f-english'),hint:$('h-english'),pw:$('pw-english')},
+    ...PRONOUNS.map(({key})=>({key,inp:$('f-'+key),hint:$('h-'+key),pw:$('pw-'+key)}))
+  ];
+}
+
+function startVerbs() {
+  sc=0;sw=0;tfCorrect=0;tfTotal=0;checked=false;isRetry=false;
+  mastered=new Set();firstTryCorrect=0;
+  queue=shuffle(verbsList);sessionTotal=queue.length;
+  $('finish-screen').classList.remove('show');
+  $('verb-card').style.display='';
+  $('verb-retry-banner').className='retry-banner';
+  updateScore(); updateRetryUI(); showVerbWord();
+}
+
+function startVerbRetry() {
+  const wrongs=getWrong('verbs');
+  if (!wrongs.length) return;
+  sc=0;sw=0;tfCorrect=0;tfTotal=0;checked=false;isRetry=true;
+  mastered=new Set();firstTryCorrect=0;
+  queue=shuffle(wrongs.map(x=>x.verb));sessionTotal=queue.length;
+  $('finish-screen').classList.remove('show');
+  $('verb-card').style.display='';
+  $('verb-retry-banner').textContent=`Reviewing ${wrongs.length} wrong verb${wrongs.length>1?'s':''} — must get all right`;
+  $('verb-retry-banner').className='retry-banner show';
+  updateScore(); showVerbWord();
+}
+
+function showVerbWord() {
+  if (!queue.length) { showFinish(); return; }
+  checked=false;
+  const verb=queue[0];
+  $('verb-meta').textContent=`Mastered ${mastered.size} of ${sessionTotal} — ${queue.length} in queue`;
+  $('verb-word').textContent=verb.infinitive;
+
+  // always show previous wrong answers if they exist
+  const wrongItem=getWrong('verbs').find(x=>x.verb.infinitive===verb.infinitive);
+  const prevAnswers=wrongItem?wrongItem.userAnswers:null;
+
+  allVerbFields().forEach(({key,inp,hint,pw})=>{
+    inp.value=''; inp.className='field-input'; inp.disabled=false;
+    hint.textContent=''; hint.className='hint';
+    if (prevAnswers && prevAnswers[key]) {
+      pw.textContent=`Previously: "${prevAnswers[key]}"`;
+      pw.className='prev-wrong show';
+    } else { pw.className='prev-wrong'; }
+  });
+
+  lastWrongVerb=null;
+  $('verb-dispute').style.display='none';
+  $('verb-banner').className='verb-banner';
+  $('verb-check').style.display=''; $('verb-skip').style.display=''; $('verb-next').style.display='none';
+  updateScore(); $('f-english').focus();
+}
+
+function checkVerbWord() {
+  if (checked) return; checked=true;
+  const verb=queue[0]; queue.shift();
+  const correct={english:verb.english,...Object.fromEntries(PRONOUNS.map(p=>[p.key,verb[p.key]]))};
+  let ok=0;
+  const userAnswers={};
+  allVerbFields().forEach(({key,inp,hint})=>{
+    const ua=inp.value.trim();
+    userAnswers[key]=ua;
+    const isOk=normalize(ua)===normalize(correct[key]);
+    inp.className='field-input '+(isOk?'ok':'bad');
+    inp.disabled=true;
+    if (!isOk) { hint.textContent='→ '+correct[key]; hint.className='hint show'; }
+    if (isOk) ok++;
+  });
+  const total=allVerbFields().length;
+  tfCorrect+=ok; tfTotal+=total;
+  const wasFirstAttempt=!getWrong('verbs').find(x=>x.verb.infinitive===verb.infinitive);
+  if (ok===total) {
+    mastered.add(verb.infinitive);
+    if (wasFirstAttempt) firstTryCorrect++;
+    $('verb-banner').textContent='✓ Perfect — all fields correct!';
+    $('verb-banner').className='verb-banner ok show';
+    removeWrongVerb(verb.infinitive);
+    lastWrongVerb=null;
+    $('verb-dispute').style.display='none';
+  } else {
+    if (wasFirstAttempt) sw++;
+    $('verb-banner').textContent=`✗ ${ok} / ${total} fields correct — you'll see this again`;
+    $('verb-banner').className='verb-banner bad show';
+    saveWrongVerb(verb, userAnswers);
+    queue.push(verb); // re-insert at end
+    lastWrongVerb=verb; lastVerbWasFirst=wasFirstAttempt;
+    $('verb-dispute').style.display='';
+  }
+  $('verb-check').style.display='none'; $('verb-skip').style.display='none'; $('verb-next').style.display='';
+  $('verb-next').focus();
+  updateScore(); updateRetryUI();
+}
+
+$('verb-check').addEventListener('click', checkVerbWord);
+$('verb-next').addEventListener('click', showVerbWord);
+
+$('verb-dispute').addEventListener('click', ()=>{
+  if (!lastWrongVerb) return;
+  if (lastVerbWasFirst) sw--;
+  queue.pop(); // item was pushed to end in checkVerbWord
+  mastered.add(lastWrongVerb.infinitive);
+  if (lastVerbWasFirst) firstTryCorrect++;
+  removeWrongVerb(lastWrongVerb.infinitive);
+  lastWrongVerb=null;
+  $('verb-dispute').style.display='none';
+  $('verb-banner').textContent='✓ Marked as correct!';
+  $('verb-banner').className='verb-banner ok show';
+  allVerbFields().forEach(({inp})=>{ inp.classList.remove('bad'); inp.classList.add('ok'); });
+  updateScore(); updateRetryUI();
+});
+$('verb-skip').style.display='none'; // mastery mode: no skipping
+document.addEventListener('keydown', e=>{
+  if (appMode!=='verbs') return;
+  if (e.key==='Enter'&&e.target.tagName==='INPUT') {
+    if (!checked) checkVerbWord(); else showVerbWord();
+  }
+});
+
+// ══════════════════════════════════════════════════════
+//  FINISH SCREEN
+// ══════════════════════════════════════════════════════
+function showFinish() {
+  $('vocab-card').style.display='none'; $('verb-card').style.display='none';
+  const total=sessionTotal;
+  const firstPct=total?(firstTryCorrect/total*100).toFixed(0):'0';
+  const neededRetry=total-firstTryCorrect;
+  saveBest(appMode, parseFloat(firstPct));
+
+  $('fin-emoji').textContent=neededRetry===0?'🏆':neededRetry<=Math.ceil(total*0.2)?'🎉':neededRetry<=Math.ceil(total*0.5)?'📚':'💪';
+  $('fin-pct').textContent='All '+total+' mastered!';
+  $('fin-sub').textContent=`First try: ${firstTryCorrect} / ${total} (${firstPct}%)`;
+  $('fin-fields').textContent=neededRetry>0?`Needed retesting: ${neededRetry} item${neededRetry>1?'s':''}  ·  Total misses: ${sw}`:'Perfect round — no retesting needed!';
+  $('fin-wrong-note').textContent='';
+  $('finish-screen').classList.add('show');
+  updateScore(); updateRetryUI();
+}
+
+$('restart-btn').addEventListener('click', ()=>{ if (appMode==='vocab') startVocab(); else startVerbs(); });
+
+// ══════════════════════════════════════════════════════
+//  UPLOAD
+// ══════════════════════════════════════════════════════
+function renderUpload(mode) {
+  const sec=$('upload-section');
+  if (mode==='vocab') {
+    sec.innerHTML=`<details class="upload-card"><summary>Upload custom word list</summary><div class="upload-body"><p>Array-of-pairs .txt file:</p><pre>[
+  ['hola', 'hello'],
+  ['gracias', 'thank you']
+]</pre><div class="upload-row"><input type="file" id="file-input" accept=".txt"><button class="btn btn-primary" id="upload-btn">Upload</button></div><div class="upload-status" id="upload-status"></div></div></details>`;
+    $('upload-btn').addEventListener('click',()=>doUpload('/api/upload-words',loadVocab));
+  } else {
+    sec.innerHTML=`<details class="upload-card"><summary>Upload custom verb list</summary><div class="upload-body"><p>.json file — array of verb objects:</p><pre>[{"infinitive":"bailar","english":"to dance","yo":"bailo","tu":"bailas","el":"baila","nosotros":"bailamos","vosotros":"bailáis","ellos":"bailan"}]</pre><div class="upload-row"><input type="file" id="file-input" accept=".json"><button class="btn btn-primary" id="upload-btn">Upload</button></div><div class="upload-status" id="upload-status"></div></div></details>`;
+    $('upload-btn').addEventListener('click',()=>doUpload('/api/upload',loadVerbs));
+  }
+}
+
+async function doUpload(endpoint, reloader) {
+  const file=$('file-input').files[0]; const status=$('upload-status');
+  if (!file){status.textContent='Select a file first.';status.className='upload-status err show';return;}
+  const fd=new FormData(); fd.append('file',file);
+  try {
+    $('upload-btn').disabled=true; $('upload-btn').textContent='Uploading…';
+    const res=await fetch(endpoint,{method:'POST',body:fd}); const data=await res.json();
+    if (data.error) throw new Error(data.error);
+    status.textContent=`Uploaded ${data.count} items. Restarting…`;
+    status.className='upload-status ok show';
+    $('file-input').value=''; await reloader();
+  } catch(err){status.textContent='Error: '+err.message;status.className='upload-status err show';}
+  finally{$('upload-btn').disabled=false;$('upload-btn').textContent='Upload';}
+}
+
+// ── init ───────────────────────────────────────────────
+renderUpload('vocab');
+updateRetryUI();
+loadVocab();
+loadVerbs();
+</script>
+</body>
+</html>

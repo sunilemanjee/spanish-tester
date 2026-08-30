@@ -1,0 +1,11 @@
+[
+  {"infinitive":"pedir","english":"to ask for","yo":"pido","tu":"pides","el":"pide","nosotros":"pedimos","vosotros":"pedís","ellos":"piden"},
+  {"infinitive":"repetir","english":"to repeat","yo":"repito","tu":"repites","el":"repite","nosotros":"repetimos","vosotros":"repetís","ellos":"repiten"},
+  {"infinitive":"empezar","english":"to begin","yo":"empiezo","tu":"empiezas","el":"empieza","nosotros":"empezamos","vosotros":"empezáis","ellos":"empiezan"},
+  {"infinitive":"preferir","english":"to prefer","yo":"prefiero","tu":"prefieres","el":"prefiere","nosotros":"preferimos","vosotros":"preferís","ellos":"prefieren"},
+  {"infinitive":"querer","english":"to want","yo":"quiero","tu":"quieres","el":"quiere","nosotros":"queremos","vosotros":"queréis","ellos":"quieren"},
+  {"infinitive":"tener","english":"to have","yo":"tengo","tu":"tienes","el":"tiene","nosotros":"tenemos","vosotros":"tenéis","ellos":"tienen"},
+  {"infinitive":"dormir","english":"to sleep","yo":"duermo","tu":"duermes","el":"duerme","nosotros":"dormimos","vosotros":"dormís","ellos":"duermen"},
+  {"infinitive":"poder","english":"to be able to","yo":"puedo","tu":"puedes","el":"puede","nosotros":"podemos","vosotros":"podéis","ellos":"pueden"},
+  {"infinitive":"jugar","english":"to play","yo":"juego","tu":"juegas","el":"juega","nosotros":"jugamos","vosotros":"jugáis","ellos":"juegan"}
+]
