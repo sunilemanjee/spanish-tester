@@ -115,9 +115,111 @@
     .upload-status.ok  { background:var(--green-bg); color:var(--green); }
     .upload-status.err { background:var(--red-bg);   color:var(--red); }
     .loading { color:var(--muted); text-align:center; padding:48px 0; font-size:.9rem; }
+
+    /* child selector */
+    .child-bar { width:100%; max-width:620px; display:flex; align-items:center; gap:10px; margin-bottom:14px; flex-wrap:wrap; }
+    .child-label { font-size:.78rem; color:var(--muted); font-weight:600; white-space:nowrap; }
+    .child-select { background:var(--surface2); border:1.5px solid var(--border); color:var(--text); border-radius:8px; padding:6px 12px; font-size:.84rem; cursor:pointer; outline:none; flex:1; min-width:0; }
+    .child-select:focus { border-color:var(--accent); }
+
+    /* manage section */
+    .manage-card { width:100%; max-width:620px; background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:16px 20px; margin-bottom:10px; }
+    .manage-card summary { cursor:pointer; font-size:.81rem; font-weight:600; color:var(--muted); user-select:none; list-style:none; display:flex; align-items:center; gap:8px; }
+    .manage-card summary::before { content:'▶'; font-size:.57rem; transition:transform .15s; }
+    .manage-card[open] summary::before { transform:rotate(90deg); }
+    .manage-body { margin-top:14px; display:flex; flex-direction:column; gap:14px; }
+    .manage-row { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+    .manage-row .field-input { flex:1; min-width:120px; }
+    .manage-label { font-size:.72rem; color:var(--muted); font-weight:600; text-transform:uppercase; letter-spacing:.06em; margin-bottom:4px; }
+    .add-status { font-size:.78rem; padding:6px 11px; border-radius:6px; display:none; }
+    .add-status.show { display:block; }
+    .add-status.ok  { background:var(--green-bg); color:var(--green); }
+    .add-status.err { background:var(--red-bg);   color:var(--red); }
+    .conj-add-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+    .conj-add-field { display:flex; flex-direction:column; gap:3px; }
+    .btn-sm { padding:6px 13px; font-size:.78rem; font-weight:600; border:none; border-radius:7px; cursor:pointer; }
+    .btn-sm-primary { background:var(--accent); color:#fff; }
+    .btn-sm-primary:hover { background:var(--accent-hover); }
+    .btn-sm-outline { background:transparent; color:var(--text); border:1.5px solid var(--border); }
+    .btn-sm-outline:hover { border-color:var(--accent); color:var(--accent); }
+    hr.divider { border:none; border-top:1px solid var(--border); margin:4px 0; }
+
+    /* word list */
+    .list-filter { width:100%; background:var(--surface2); border:1.5px solid var(--border); border-radius:8px; color:var(--text); font-size:.82rem; padding:6px 11px; outline:none; margin-bottom:8px; }
+    .list-filter:focus { border-color:var(--accent); }
+    .word-list { max-height:320px; overflow-y:auto; display:flex; flex-direction:column; gap:4px; }
+    .word-row { display:grid; grid-template-columns:1fr 1fr auto auto; gap:6px; align-items:center; padding:5px 4px; border-radius:7px; transition:background .1s; }
+    .word-row:hover { background:var(--surface2); }
+    .word-row.dirty { background:rgba(124,106,247,.08); }
+    .word-row .wi { background:var(--surface2); border:1.5px solid transparent; border-radius:6px; color:var(--text); font-size:.8rem; padding:5px 8px; outline:none; width:100%; }
+    .word-row.dirty .wi { border-color:var(--accent); }
+    .word-row .wi:focus { border-color:var(--accent); background:var(--surface); }
+    .btn-xs { padding:4px 9px; font-size:.72rem; font-weight:700; border:none; border-radius:6px; cursor:pointer; white-space:nowrap; }
+    .btn-xs-save { background:var(--accent); color:#fff; display:none; }
+    .word-row.dirty .btn-xs-save { display:block; }
+    .btn-xs-del { background:transparent; color:var(--muted); border:1px solid transparent; }
+    .btn-xs-del:hover { color:var(--red); border-color:var(--red-border); }
+    .list-empty { color:var(--muted); font-size:.8rem; text-align:center; padding:12px 0; }
+
+    /* verb list */
+    .verb-list { max-height:320px; overflow-y:auto; display:flex; flex-direction:column; gap:4px; }
+    .verb-row { border-radius:7px; overflow:hidden; }
+    .verb-row-header { display:grid; grid-template-columns:1fr 1fr auto auto; gap:6px; align-items:center; padding:6px 4px; cursor:pointer; transition:background .1s; }
+    .verb-row-header:hover { background:var(--surface2); }
+    .verb-row.open .verb-row-header { background:var(--surface2); }
+    .verb-row-label { font-size:.8rem; font-weight:600; }
+    .verb-row-en { font-size:.78rem; color:var(--muted); }
+    .verb-edit-form { display:none; padding:10px 8px 8px; background:var(--surface2); border-top:1px solid var(--border); }
+    .verb-row.open .verb-edit-form { display:block; }
+    .verb-edit-grid { display:grid; grid-template-columns:1fr 1fr; gap:6px; margin-bottom:8px; }
+    .verb-edit-field { display:flex; flex-direction:column; gap:2px; }
+    .verb-edit-field label { font-size:.65rem; color:var(--muted); font-weight:600; text-transform:uppercase; letter-spacing:.06em; }
+    .verb-edit-field input { background:var(--surface); border:1.5px solid var(--border); border-radius:6px; color:var(--text); font-size:.8rem; padding:5px 8px; outline:none; }
+    .verb-edit-field input:focus { border-color:var(--accent); }
+    .verb-edit-actions { display:flex; gap:6px; justify-content:flex-end; }
+    .list-count { font-size:.71rem; color:var(--muted); margin-bottom:6px; }
+
+    /* new-child form overlay */
+    .overlay { position:fixed; inset:0; background:rgba(0,0,0,.7); display:flex; align-items:center; justify-content:center; z-index:100; padding:16px; }
+    .overlay.hidden { display:none; }
+    .new-child-card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:28px 28px 22px; width:100%; max-width:480px; }
+    .new-child-card h2 { font-size:1.05rem; font-weight:700; margin-bottom:16px; }
+    .form-group { margin-bottom:14px; }
+    .form-group label { display:block; font-size:.77rem; color:var(--muted); font-weight:600; margin-bottom:5px; text-transform:uppercase; letter-spacing:.06em; }
+    .form-group input[type="text"] { width:100%; background:var(--surface2); border:1.5px solid var(--border); color:var(--text); border-radius:8px; padding:8px 12px; font-size:.9rem; outline:none; }
+    .form-group input[type="text"]:focus { border-color:var(--accent); }
+    .form-row { display:flex; gap:10px; justify-content:flex-end; margin-top:18px; flex-wrap:wrap; }
+    .new-child-status { font-size:.79rem; margin-top:8px; padding:7px 12px; border-radius:6px; display:none; }
+    .new-child-status.show { display:block; }
+    .new-child-status.ok  { background:var(--green-bg); color:var(--green); }
+    .new-child-status.err { background:var(--red-bg);   color:var(--red); }
   </style>
 </head>
 <body>
+
+<!-- new-child overlay -->
+<div class="overlay hidden" id="new-child-overlay">
+  <div class="new-child-card">
+    <h2>Add New Child</h2>
+    <div class="form-group">
+      <label>Child's Name</label>
+      <input type="text" id="nc-name" placeholder="e.g. Sofia" autocomplete="off">
+    </div>
+    <div class="form-group">
+      <label>Vocabulary File (.txt) <span style="color:var(--red)">*</span></label>
+      <input type="file" id="nc-vocab-file" accept=".txt" style="width:100%;background:var(--surface2);border:1.5px solid var(--border);border-radius:8px;padding:6px 10px;color:var(--text);font-size:.8rem;cursor:pointer;">
+    </div>
+    <div class="form-group">
+      <label>Verb File (.json) <span style="color:var(--muted)">(optional)</span></label>
+      <input type="file" id="nc-verbs-file" accept=".json" style="width:100%;background:var(--surface2);border:1.5px solid var(--border);border-radius:8px;padding:6px 10px;color:var(--text);font-size:.8rem;cursor:pointer;">
+    </div>
+    <div class="new-child-status" id="nc-status"></div>
+    <div class="form-row">
+      <button class="btn btn-outline" id="nc-cancel">Cancel</button>
+      <button class="btn btn-primary" id="nc-submit">Create Child</button>
+    </div>
+  </div>
+</div>
 
 <header>
   <h1>Spanish <span>↔</span> English</h1>
@@ -126,6 +228,12 @@
     <button class="app-tab" id="tab-verbs">Verbs</button>
   </div>
 </header>
+
+<div class="child-bar">
+  <span class="child-label">Learner:</span>
+  <select class="child-select" id="child-select"><option value="">Loading…</option></select>
+  <button class="btn btn-outline" id="add-child-btn" style="padding:5px 12px;font-size:.78rem;">+ New Child</button>
+</div>
 
 <div class="dir-row" id="dir-row">
   <div class="dir-toggle">
@@ -222,6 +330,9 @@ const PRONOUNS = [
   {key:'ellos',    label:'ellos / ellas / Uds.'},
 ];
 
+// ── child/session ──────────────────────────────────────
+let activeChild = localStorage.getItem('active-child') || '';
+
 // ── state ──────────────────────────────────────────────
 let appMode = 'vocab', vocabDir = 'es-en';
 let vocabPairs = [], verbsList = [];
@@ -247,9 +358,10 @@ function shuffle(arr) {
   return a;
 }
 
-// ── wrong answer storage ───────────────────────────────
-function getWrong(mode)        { return JSON.parse(localStorage.getItem('wrong-'+mode)||'[]'); }
-function setWrong(mode, items) { localStorage.setItem('wrong-'+mode, JSON.stringify(items)); }
+// ── wrong answer storage (namespaced by child) ─────────
+function wrongKey(mode) { return 'wrong-'+mode+'-'+(activeChild||'default'); }
+function getWrong(mode)        { return JSON.parse(localStorage.getItem(wrongKey(mode))||'[]'); }
+function setWrong(mode, items) { localStorage.setItem(wrongKey(mode), JSON.stringify(items)); }
 
 function saveWrongVocab(pair, userAnswer) {
   const items = getWrong('vocab');
@@ -339,7 +451,7 @@ $('global-restart-btn').addEventListener('click', () => {
 });
 
 // ── score UI ───────────────────────────────────────────
-function bestKey(mode) { return 'best-'+mode; }
+function bestKey(mode) { return 'best-'+mode+'-'+(activeChild||'default'); }
 function getBest(mode) { return localStorage.getItem(bestKey(mode)); }
 function saveBest(mode, pct) {
   const prev=parseFloat(getBest(mode)||'0');
@@ -378,11 +490,13 @@ $('tab-verbs').addEventListener('click',()=>switchMode('verbs'));
 //  VOCAB MODE
 // ══════════════════════════════════════════════════════
 async function loadVocab() {
+  if (!activeChild) { $('vocab-loading').textContent='Select a learner above to begin.'; return; }
   try {
-    const res=await fetch('/api/words'); const data=await res.json();
+    const res=await fetch('/api/words?child='+encodeURIComponent(activeChild)); const data=await res.json();
     if (data.error) throw new Error(data.error);
     vocabPairs=data.pairs;
     $('vocab-loading').style.display='none'; $('vocab-content').style.display='block';
+    buildVocabList(vocabPairs);
     if (appMode==='vocab') startVocab();
   } catch(err) { $('vocab-loading').textContent='Error: '+err.message; }
 }
@@ -533,12 +647,14 @@ $('vocab-dispute').addEventListener('click', ()=>{
 //  VERB MODE
 // ══════════════════════════════════════════════════════
 async function loadVerbs() {
+  if (!activeChild) { $('verb-loading').textContent='Select a learner above to begin.'; return; }
   try {
-    const res=await fetch('/api/verbs'); const data=await res.json();
+    const res=await fetch('/api/verbs?child='+encodeURIComponent(activeChild)); const data=await res.json();
     if (data.error) throw new Error(data.error);
     verbsList=data.verbs;
     buildConjGrid();
     $('verb-loading').style.display='none'; $('verb-content').style.display='block';
+    buildVerbList(verbsList);
     if (appMode==='verbs') startVerbs();
   } catch(err) { $('verb-loading').textContent='Error: '+err.message; }
 }
@@ -711,40 +827,404 @@ $('resume-session-btn').addEventListener('click', resumeSavedSession);
 // ══════════════════════════════════════════════════════
 //  UPLOAD
 // ══════════════════════════════════════════════════════
+// ── download helpers ────────────────────────────────────
+function downloadVocab() {
+  if (!vocabPairs.length) return;
+  const content = '[\n' + vocabPairs.map(p =>
+    `  [${JSON.stringify(p.spanish)}, ${JSON.stringify(p.english)}]`
+  ).join(',\n') + '\n]';
+  triggerDownload(content, `vocab-${activeChild}.txt`, 'text/plain');
+}
+function downloadVerbs() {
+  if (!verbsList.length) return;
+  triggerDownload(JSON.stringify(verbsList, null, 2), `verbs-${activeChild}.json`, 'application/json');
+}
+function triggerDownload(content, filename, type) {
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([content], { type }));
+  a.download = filename; a.click(); URL.revokeObjectURL(a.href);
+}
+
+// ── add single item ─────────────────────────────────────
+async function addVocabWord() {
+  const sp = $('add-spanish').value.trim();
+  const en = $('add-english').value.trim();
+  const st = $('add-vocab-status');
+  if (!sp || !en) { st.textContent='Both fields required.'; st.className='add-status err show'; return; }
+  try {
+    $('add-vocab-btn').disabled=true;
+    const res=await fetch('/api/word?child='+encodeURIComponent(activeChild),{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({spanish:sp,english:en})});
+    const d=await res.json(); if(d.error) throw new Error(d.error);
+    st.textContent=`Added "${sp}".`; st.className='add-status ok show';
+    $('add-spanish').value=''; $('add-english').value='';
+    const r=await fetch('/api/words?child='+encodeURIComponent(activeChild)); const data=await r.json();
+    if (!data.error) { vocabPairs=data.pairs; buildVocabList(vocabPairs); }
+    setTimeout(()=>{st.className='add-status';},3000);
+  } catch(err){st.textContent='Error: '+err.message;st.className='add-status err show';}
+  finally{$('add-vocab-btn').disabled=false;}
+}
+
+async function addVerbEntry() {
+  const st=$('add-verb-status');
+  const fields=['infinitive','english','yo','tu','el','nosotros','vosotros','ellos'];
+  const verb={};
+  for(const f of fields){
+    const v=document.getElementById('av-'+f)?.value.trim();
+    if(!v){st.textContent=`"${f}" required.`;st.className='add-status err show';return;}
+    verb[f]=v;
+  }
+  try {
+    $('add-verb-btn').disabled=true;
+    const res=await fetch('/api/verb?child='+encodeURIComponent(activeChild),{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(verb)});
+    const d=await res.json(); if(d.error) throw new Error(d.error);
+    st.textContent=`Added "${verb.infinitive}".`; st.className='add-status ok show';
+    fields.forEach(f=>{const el=document.getElementById('av-'+f);if(el)el.value='';});
+    const r=await fetch('/api/verbs?child='+encodeURIComponent(activeChild)); const data=await r.json();
+    if(!data.error){ verbsList=data.verbs; buildVerbList(verbsList); }
+    setTimeout(()=>{st.className='add-status';},3000);
+  } catch(err){st.textContent='Error: '+err.message;st.className='add-status err show';}
+  finally{$('add-verb-btn').disabled=false;}
+}
+
+// ── word list renderer ──────────────────────────────────
+function buildVocabList(pairs, filter='') {
+  const container = $('vocab-word-list');
+  if (!container) return;
+  const f = filter.toLowerCase();
+  const visible = f ? pairs.filter(p => p.spanish.toLowerCase().includes(f) || p.english.toLowerCase().includes(f)) : pairs;
+  if (!visible.length) { container.innerHTML=`<div class="list-empty">No words match.</div>`; return; }
+  $('vocab-list-count').textContent = `${visible.length} of ${pairs.length} words`;
+  container.innerHTML = visible.map((p, i) => `
+    <div class="word-row" data-orig="${escHtml(p.spanish)}" id="vrow-${i}">
+      <input class="wi" type="text" value="${escHtml(p.spanish)}" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" data-field="spanish">
+      <input class="wi" type="text" value="${escHtml(p.english)}" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" data-field="english">
+      <button class="btn-xs btn-xs-save">Save</button>
+      <button class="btn-xs btn-xs-del" title="Delete">✕</button>
+    </div>`).join('');
+
+  container.querySelectorAll('.word-row').forEach(row => {
+    const inputs = row.querySelectorAll('input');
+    inputs.forEach(inp => inp.addEventListener('input', () => row.classList.add('dirty')));
+    row.querySelector('.btn-xs-save').addEventListener('click', async () => {
+      const orig = row.dataset.orig;
+      const sp   = row.querySelectorAll('input')[0].value.trim();
+      const en   = row.querySelectorAll('input')[1].value.trim();
+      if (!sp || !en) return;
+      try {
+        const r = await fetch('/api/word?child='+encodeURIComponent(activeChild), {
+          method:'PUT', headers:{'Content-Type':'application/json'},
+          body: JSON.stringify({ originalSpanish: orig, spanish: sp, english: en })
+        });
+        const d = await r.json(); if (d.error) throw new Error(d.error);
+        row.dataset.orig = sp;
+        row.classList.remove('dirty');
+        // update in-memory list
+        const idx = vocabPairs.findIndex(x => x.spanish === orig);
+        if (idx >= 0) vocabPairs[idx] = { spanish: sp, english: en };
+        else vocabPairs.push({ spanish: sp, english: en });
+      } catch(e) { alert('Save failed: '+e.message); }
+    });
+    row.querySelector('.btn-xs-del').addEventListener('click', async () => {
+      const orig = row.dataset.orig;
+      if (!confirm(`Delete "${orig}"?`)) return;
+      try {
+        const r = await fetch('/api/word?child='+encodeURIComponent(activeChild)+'&spanish='+encodeURIComponent(orig), { method:'DELETE' });
+        const d = await r.json(); if (d.error) throw new Error(d.error);
+        vocabPairs = vocabPairs.filter(x => x.spanish !== orig);
+        buildVocabList(vocabPairs, $('vocab-list-filter')?.value || '');
+      } catch(e) { alert('Delete failed: '+e.message); }
+    });
+  });
+}
+
+function buildVerbList(verbs, filter='') {
+  const container = $('verb-list-container');
+  if (!container) return;
+  const f = filter.toLowerCase();
+  const visible = f ? verbs.filter(v => v.infinitive.toLowerCase().includes(f) || v.english.toLowerCase().includes(f)) : verbs;
+  $('verb-list-count').textContent = `${visible.length} of ${verbs.length} verbs`;
+  if (!visible.length) { container.innerHTML=`<div class="list-empty">No verbs match.</div>`; return; }
+  const VERB_FIELDS = [
+    {k:'infinitive',l:'Infinitive'},{k:'english',l:'English'},
+    {k:'yo',l:'yo'},{k:'tu',l:'tú'},{k:'el',l:'él/ella/Ud.'},
+    {k:'nosotros',l:'nosotros'},{k:'vosotros',l:'vosotros'},{k:'ellos',l:'ellos/ellas'}
+  ];
+  container.innerHTML = visible.map((v, i) => `
+    <div class="verb-row" id="verb-row-${i}">
+      <div class="verb-row-header">
+        <span class="verb-row-label">${escHtml(v.infinitive)}</span>
+        <span class="verb-row-en">${escHtml(v.english)}</span>
+        <button class="btn-xs btn-xs-save" style="display:block">Edit</button>
+        <button class="btn-xs btn-xs-del" title="Delete">✕</button>
+      </div>
+      <div class="verb-edit-form">
+        <div class="verb-edit-grid">
+          ${VERB_FIELDS.map(f=>`
+            <div class="verb-edit-field">
+              <label>${f.l}</label>
+              <input type="text" data-key="${f.k}" value="${escHtml(v[f.k]||'')}" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+            </div>`).join('')}
+        </div>
+        <div class="verb-edit-actions">
+          <button class="btn-xs btn-xs-del verb-cancel-btn">Cancel</button>
+          <button class="btn-xs btn-xs-save verb-save-btn" style="display:block">Save</button>
+        </div>
+      </div>
+    </div>`).join('');
+
+  container.querySelectorAll('.verb-row').forEach((row, i) => {
+    const orig = visible[i].infinitive;
+    row.querySelector('.verb-row-header .btn-xs-save').addEventListener('click', () => {
+      row.classList.toggle('open');
+    });
+    row.querySelector('.verb-cancel-btn').addEventListener('click', () => row.classList.remove('open'));
+    row.querySelector('.verb-row-header .btn-xs-del').addEventListener('click', async () => {
+      if (!confirm(`Delete "${orig}"?`)) return;
+      try {
+        const r = await fetch('/api/verb?child='+encodeURIComponent(activeChild)+'&infinitive='+encodeURIComponent(orig), { method:'DELETE' });
+        const d = await r.json(); if(d.error) throw new Error(d.error);
+        verbsList = verbsList.filter(v => v.infinitive !== orig);
+        buildVerbList(verbsList, $('verb-list-filter')?.value || '');
+      } catch(e) { alert('Delete failed: '+e.message); }
+    });
+    row.querySelector('.verb-save-btn').addEventListener('click', async () => {
+      const inputs = row.querySelectorAll('.verb-edit-form input');
+      const verb = { originalInfinitive: orig };
+      inputs.forEach(inp => { verb[inp.dataset.key] = inp.value.trim(); });
+      try {
+        const r = await fetch('/api/verb?child='+encodeURIComponent(activeChild), {
+          method:'PUT', headers:{'Content-Type':'application/json'}, body: JSON.stringify(verb)
+        });
+        const d = await r.json(); if(d.error) throw new Error(d.error);
+        const { originalInfinitive, ...saved } = verb;
+        const idx = verbsList.findIndex(v => v.infinitive === orig);
+        if (idx >= 0) verbsList[idx] = saved; else verbsList.push(saved);
+        buildVerbList(verbsList, $('verb-list-filter')?.value || '');
+      } catch(e) { alert('Save failed: '+e.message); }
+    });
+  });
+}
+
+function escHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
 function renderUpload(mode) {
   const sec=$('upload-section');
   if (mode==='vocab') {
-    sec.innerHTML=`<details class="upload-card"><summary>Upload custom word list</summary><div class="upload-body"><p>Array-of-pairs .txt file:</p><pre>[
-  ['hola', 'hello'],
-  ['gracias', 'thank you']
-]</pre><div class="upload-row"><input type="file" id="file-input" accept=".txt"><button class="btn btn-primary" id="upload-btn">Upload</button></div><div class="upload-status" id="upload-status"></div></div></details>`;
-    $('upload-btn').addEventListener('click',()=>doUpload('/api/upload-words',loadVocab));
+    sec.innerHTML=`
+<details class="manage-card" id="manage-details">
+  <summary>Manage word list</summary>
+  <div class="manage-body">
+    <div>
+      <div class="manage-label">Current words</div>
+      <input class="list-filter" type="text" id="vocab-list-filter" placeholder="Filter words…" autocomplete="off" spellcheck="false">
+      <div class="list-count" id="vocab-list-count"></div>
+      <div class="word-list" id="vocab-word-list"></div>
+    </div>
+    <hr class="divider">
+    <div>
+      <div class="manage-label">Add a word</div>
+      <div class="manage-row">
+        <input class="field-input" type="text" id="add-spanish" placeholder="Spanish" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+        <input class="field-input" type="text" id="add-english" placeholder="English" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+        <button class="btn-sm btn-sm-primary" id="add-vocab-btn">Add</button>
+      </div>
+      <div class="add-status" id="add-vocab-status"></div>
+    </div>
+    <hr class="divider">
+    <div>
+      <div class="manage-label">Download current list</div>
+      <button class="btn-sm btn-sm-outline" id="dl-vocab-btn">↓ Download vocab (.txt)</button>
+    </div>
+    <hr class="divider">
+    <div>
+      <div class="manage-label">Upload to replace / bulk add</div>
+      <p style="font-size:.74rem;color:var(--muted);margin-bottom:8px">Array-of-pairs .txt — each row: <code style="color:var(--accent)">['spanish', 'english']</code></p>
+      <div class="manage-row">
+        <input type="file" id="file-input" accept=".txt" style="flex:1;background:var(--surface2);border:1.5px solid var(--border);border-radius:8px;padding:6px 10px;color:var(--text);font-size:.8rem;cursor:pointer;">
+        <button class="btn-sm btn-sm-primary" id="upload-btn">Upload</button>
+      </div>
+      <div class="add-status" id="upload-status"></div>
+    </div>
+  </div>
+</details>`;
+    // Build list immediately (data may already be loaded)
+    if (vocabPairs.length) buildVocabList(vocabPairs);
+    $('vocab-list-filter').addEventListener('input', e => buildVocabList(vocabPairs, e.target.value));
+    $('add-vocab-btn').addEventListener('click', addVocabWord);
+    $('add-spanish').addEventListener('keydown', e=>{ if(e.key==='Enter') $('add-english').focus(); });
+    $('add-english').addEventListener('keydown', e=>{ if(e.key==='Enter') addVocabWord(); });
+    $('dl-vocab-btn').addEventListener('click', downloadVocab);
+    $('upload-btn').addEventListener('click',()=>doUpload('/api/upload-words?child='+encodeURIComponent(activeChild), async()=>{ await loadVocab(); buildVocabList(vocabPairs); }));
   } else {
-    sec.innerHTML=`<details class="upload-card"><summary>Upload custom verb list</summary><div class="upload-body"><p>.json file — array of verb objects:</p><pre>[{"infinitive":"bailar","english":"to dance","yo":"bailo","tu":"bailas","el":"baila","nosotros":"bailamos","vosotros":"bailáis","ellos":"bailan"}]</pre><div class="upload-row"><input type="file" id="file-input" accept=".json"><button class="btn btn-primary" id="upload-btn">Upload</button></div><div class="upload-status" id="upload-status"></div></div></details>`;
-    $('upload-btn').addEventListener('click',()=>doUpload('/api/upload',loadVerbs));
+    const pLabels={infinitive:'Infinitive',english:'English',yo:'yo',tu:'tú',el:'él/ella/Ud.',nosotros:'nosotros',vosotros:'vosotros',ellos:'ellos/ellas'};
+    const pFields=Object.entries(pLabels).map(([k,l])=>`
+      <div class="conj-add-field">
+        <div class="manage-label">${l}</div>
+        <input class="field-input" type="text" id="av-${k}" placeholder="${l}" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+      </div>`).join('');
+    sec.innerHTML=`
+<details class="manage-card" id="manage-details">
+  <summary>Manage verb list</summary>
+  <div class="manage-body">
+    <div>
+      <div class="manage-label">Current verbs</div>
+      <input class="list-filter" type="text" id="verb-list-filter" placeholder="Filter verbs…" autocomplete="off" spellcheck="false">
+      <div class="list-count" id="verb-list-count"></div>
+      <div class="verb-list" id="verb-list-container"></div>
+    </div>
+    <hr class="divider">
+    <div>
+      <div class="manage-label">Add a verb</div>
+      <div class="conj-add-grid">${pFields}</div>
+      <div style="margin-top:8px"><button class="btn-sm btn-sm-primary" id="add-verb-btn">Add Verb</button></div>
+      <div class="add-status" id="add-verb-status"></div>
+    </div>
+    <hr class="divider">
+    <div>
+      <div class="manage-label">Download current list</div>
+      <button class="btn-sm btn-sm-outline" id="dl-verbs-btn">↓ Download verbs (.json)</button>
+    </div>
+    <hr class="divider">
+    <div>
+      <div class="manage-label">Upload to replace / bulk add</div>
+      <p style="font-size:.74rem;color:var(--muted);margin-bottom:8px">JSON array of verb objects with all 8 fields.</p>
+      <div class="manage-row">
+        <input type="file" id="file-input" accept=".json" style="flex:1;background:var(--surface2);border:1.5px solid var(--border);border-radius:8px;padding:6px 10px;color:var(--text);font-size:.8rem;cursor:pointer;">
+        <button class="btn-sm btn-sm-primary" id="upload-btn">Upload</button>
+      </div>
+      <div class="add-status" id="upload-status"></div>
+    </div>
+  </div>
+</details>`;
+    if (verbsList.length) buildVerbList(verbsList);
+    $('verb-list-filter').addEventListener('input', e => buildVerbList(verbsList, e.target.value));
+    $('add-verb-btn').addEventListener('click', addVerbEntry);
+    $('dl-verbs-btn').addEventListener('click', downloadVerbs);
+    $('upload-btn').addEventListener('click',()=>doUpload('/api/upload?child='+encodeURIComponent(activeChild), async()=>{ await loadVerbs(); buildVerbList(verbsList); }));
   }
 }
 
 async function doUpload(endpoint, reloader) {
   const file=$('file-input').files[0]; const status=$('upload-status');
-  if (!file){status.textContent='Select a file first.';status.className='upload-status err show';return;}
+  if (!file){status.textContent='Select a file first.';status.className='add-status err show';return;}
   const fd=new FormData(); fd.append('file',file);
   try {
     $('upload-btn').disabled=true; $('upload-btn').textContent='Uploading…';
     const res=await fetch(endpoint,{method:'POST',body:fd}); const data=await res.json();
     if (data.error) throw new Error(data.error);
-    status.textContent=`Uploaded ${data.count} items. Restarting…`;
-    status.className='upload-status ok show';
+    status.textContent=`Uploaded ${data.count} items.`;
+    status.className='add-status ok show';
     $('file-input').value=''; await reloader();
-  } catch(err){status.textContent='Error: '+err.message;status.className='upload-status err show';}
+    setTimeout(()=>{status.className='add-status';},3000);
+  } catch(err){status.textContent='Error: '+err.message;status.className='add-status err show';}
   finally{$('upload-btn').disabled=false;$('upload-btn').textContent='Upload';}
 }
+
+// ── child selector ──────────────────────────────────────
+async function loadChildren() {
+  try {
+    const res=await fetch('/api/children'); const data=await res.json();
+    const sel=$('child-select'); sel.innerHTML='';
+    if (!data.children || data.children.length===0) {
+      sel.innerHTML='<option value="">No learners yet</option>';
+      return;
+    }
+    data.children.forEach(c=>{
+      const opt=document.createElement('option');
+      opt.value=c.id; opt.textContent=c.name;
+      if(c.id===activeChild) opt.selected=true;
+      sel.appendChild(opt);
+    });
+    // If saved child not in list, fall back to first
+    if (!activeChild || !data.children.find(c=>c.id===activeChild)) {
+      activeChild=data.children[0].id;
+      localStorage.setItem('active-child', activeChild);
+      sel.value=activeChild;
+    }
+    initForChild();
+  } catch(err) { $('child-select').innerHTML='<option value="">Error loading</option>'; }
+}
+
+function initForChild() {
+  // Reset state
+  vocabPairs=[]; verbsList=[];
+  sc=0;sw=0;tfCorrect=0;tfTotal=0;mastered=new Set();sessionTotal=0;firstTryCorrect=0;
+  savedSession=null; dirSessions={};
+  $('vocab-loading').style.display=''; $('vocab-loading').textContent='Loading vocabulary…';
+  $('vocab-content').style.display='none';
+  $('verb-loading').style.display=''; $('verb-loading').textContent='Loading verbs…';
+  $('verb-content').style.display='none';
+  $('finish-screen').classList.remove('show');
+  renderUpload(appMode);
+  updateRetryUI(); updateBackBtn();
+  loadVocab();
+  loadVerbs();
+}
+
+$('child-select').addEventListener('change', e => {
+  activeChild = e.target.value;
+  localStorage.setItem('active-child', activeChild);
+  initForChild();
+});
+
+$('add-child-btn').addEventListener('click', () => {
+  $('nc-name').value='';
+  $('nc-vocab-file').value='';
+  $('nc-verbs-file').value='';
+  $('nc-status').className='new-child-status';
+  $('new-child-overlay').classList.remove('hidden');
+  $('nc-name').focus();
+});
+
+$('nc-cancel').addEventListener('click', () => {
+  $('new-child-overlay').classList.add('hidden');
+});
+
+$('nc-submit').addEventListener('click', async () => {
+  const name=$('nc-name').value.trim();
+  const vocabFile=$('nc-vocab-file').files[0];
+  const verbFile=$('nc-verbs-file').files[0];
+  const status=$('nc-status');
+  if (!name) { status.textContent='Name required.'; status.className='new-child-status err show'; return; }
+  if (!vocabFile) { status.textContent='Vocabulary file required.'; status.className='new-child-status err show'; return; }
+  $('nc-submit').disabled=true; $('nc-submit').textContent='Creating…';
+  try {
+    // Create child
+    const cr=await fetch('/api/children',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name})});
+    const cd=await cr.json(); if(cd.error) throw new Error(cd.error);
+    const childId=cd.id;
+
+    // Upload vocab
+    const vfd=new FormData(); vfd.append('file',vocabFile);
+    const vr=await fetch('/api/upload-words?child='+encodeURIComponent(childId),{method:'POST',body:vfd});
+    const vd=await vr.json(); if(vd.error) throw new Error('Vocab: '+vd.error);
+
+    // Upload verbs if provided
+    if (verbFile) {
+      const bfd=new FormData(); bfd.append('file',verbFile);
+      const br=await fetch('/api/upload?child='+encodeURIComponent(childId),{method:'POST',body:bfd});
+      const bd=await br.json(); if(bd.error) throw new Error('Verbs: '+bd.error);
+    }
+
+    status.textContent=`Created ${name}! Loading…`; status.className='new-child-status ok show';
+    setTimeout(async ()=>{
+      $('new-child-overlay').classList.add('hidden');
+      await loadChildren();
+      // Switch to new child
+      activeChild=childId; localStorage.setItem('active-child',childId);
+      $('child-select').value=childId;
+      initForChild();
+    }, 800);
+  } catch(err) { status.textContent='Error: '+err.message; status.className='new-child-status err show'; }
+  finally { $('nc-submit').disabled=false; $('nc-submit').textContent='Create Child'; }
+});
 
 // ── init ───────────────────────────────────────────────
 renderUpload('vocab');
 updateRetryUI(); updateBackBtn();
-loadVocab();
-loadVerbs();
+loadChildren();
 </script>
 </body>
 </html>

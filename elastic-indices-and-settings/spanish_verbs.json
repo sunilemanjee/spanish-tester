@@ -1,0 +1,23 @@
+{
+  "index": "spanish_verbs",
+  "description": "Verb conjugation data scoped per child. One doc per verb per child. _id = '{child_slug}_{infinitive_slug}' for stable verb-level upserts.",
+  "settings": {
+    "number_of_shards": 1,
+    "number_of_replicas": 1
+  },
+  "mappings": {
+    "properties": {
+      "child_id":   { "type": "keyword" },
+      "infinitive": { "type": "keyword" },
+      "english":    { "type": "keyword" },
+      "yo":         { "type": "keyword" },
+      "tu":         { "type": "keyword" },
+      "el":         { "type": "keyword" },
+      "nosotros":   { "type": "keyword" },
+      "vosotros":   { "type": "keyword" },
+      "ellos":      { "type": "keyword" },
+      "created_at": { "type": "date" },
+      "updated_at": { "type": "date" }
+    }
+  }
+}

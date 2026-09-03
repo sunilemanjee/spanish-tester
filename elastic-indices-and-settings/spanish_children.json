@@ -1,0 +1,15 @@
+{
+  "index": "spanish_children",
+  "description": "Registry of children (learners). One doc per child. _id = child slug (e.g. 'saifan').",
+  "settings": {
+    "number_of_shards": 1,
+    "number_of_replicas": 1
+  },
+  "mappings": {
+    "properties": {
+      "name":        { "type": "keyword" },
+      "created_at":  { "type": "date" },
+      "last_active": { "type": "date" }
+    }
+  }
+}
