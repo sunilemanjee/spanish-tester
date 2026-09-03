@@ -1,0 +1,15 @@
+{
+  "index": "spanish_lists",
+  "description": "Named word-list versions per child. _id = '{child_id}_{list_slug}'. Each child can have multiple lists; active list is tracked on the child doc.",
+  "settings": {
+    "number_of_shards": 1,
+    "number_of_replicas": 1
+  },
+  "mappings": {
+    "properties": {
+      "child_id":   { "type": "keyword" },
+      "name":       { "type": "keyword" },
+      "created_at": { "type": "date" }
+    }
+  }
+}

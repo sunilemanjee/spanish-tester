@@ -17,13 +17,14 @@ const RECREATE = process.argv.includes('--recreate');
 
 const DEFINITIONS = [
   'spanish_children.json',
+  'spanish_lists.json',
   'spanish_vocab.json',
   'spanish_verbs.json',
 ].map(f => JSON.parse(fs.readFileSync(path.join(__dirname, f), 'utf8')));
 
 async function run() {
   for (const def of DEFINITIONS) {
-    const { index, settings, mappings } = def;
+    const { index, mappings } = def; // settings omitted — serverless manages shards/replicas
     const exists = await client.indices.exists({ index });
 
     if (exists) {
@@ -38,7 +39,7 @@ async function run() {
     }
 
     process.stdout.write(`  creating "${index}"… `);
-    await client.indices.create({ index, settings, mappings });
+    await client.indices.create({ index, mappings });
     console.log('done');
   }
   console.log('\nAll indices ready.');

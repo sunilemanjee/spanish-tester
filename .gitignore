@@ -1,3 +1,4 @@
 node_modules/
 source-sheets/*.pdf
 uploads/
+variables.env

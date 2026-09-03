@@ -197,6 +197,33 @@
 </head>
 <body>
 
+<!-- new-list overlay -->
+<div class="overlay hidden" id="new-list-overlay">
+  <div class="new-child-card">
+    <h2>New Word List</h2>
+    <div class="form-group">
+      <label>List Name</label>
+      <input type="text" id="nl-name" placeholder="e.g. Chapter 5" autocomplete="off">
+    </div>
+    <div class="form-group">
+      <label>Starting content</label>
+      <div style="display:flex;flex-direction:column;gap:8px;margin-top:4px">
+        <label style="display:flex;align-items:center;gap:8px;font-size:.85rem;font-weight:400;cursor:pointer">
+          <input type="radio" name="nl-mode" value="blank" checked> Blank list (no words)
+        </label>
+        <label style="display:flex;align-items:center;gap:8px;font-size:.85rem;font-weight:400;cursor:pointer">
+          <input type="radio" name="nl-mode" value="clone"> Duplicate current list
+        </label>
+      </div>
+    </div>
+    <div class="new-child-status" id="nl-status"></div>
+    <div class="form-row">
+      <button class="btn btn-outline" id="nl-cancel">Cancel</button>
+      <button class="btn btn-primary" id="nl-submit">Create List</button>
+    </div>
+  </div>
+</div>
+
 <!-- new-child overlay -->
 <div class="overlay hidden" id="new-child-overlay">
   <div class="new-child-card">
@@ -231,7 +258,11 @@
 
 <div class="child-bar">
   <span class="child-label">Learner:</span>
-  <select class="child-select" id="child-select"><option value="">Loading…</option></select>
+  <select class="child-select" id="child-select" style="flex:0 1 180px"><option value="">Loading…</option></select>
+  <span class="child-label" style="white-space:nowrap">List:</span>
+  <select class="child-select" id="list-select" style="flex:1"><option value="">—</option></select>
+  <button class="btn btn-outline" id="add-list-btn" style="padding:5px 12px;font-size:.78rem;">+ New List</button>
+  <button class="btn btn-outline" id="del-list-btn" style="padding:5px 12px;font-size:.78rem;color:var(--red);border-color:var(--red-border);display:none">Delete List</button>
   <button class="btn btn-outline" id="add-child-btn" style="padding:5px 12px;font-size:.78rem;">+ New Child</button>
 </div>
 
@@ -332,6 +363,8 @@ const PRONOUNS = [
 
 // ── child/session ──────────────────────────────────────
 let activeChild = localStorage.getItem('active-child') || '';
+let activeList  = localStorage.getItem('active-list')  || '';
+let allLists    = [];
 
 // ── state ──────────────────────────────────────────────
 let appMode = 'vocab', vocabDir = 'es-en';
@@ -490,9 +523,10 @@ $('tab-verbs').addEventListener('click',()=>switchMode('verbs'));
 //  VOCAB MODE
 // ══════════════════════════════════════════════════════
 async function loadVocab() {
-  if (!activeChild) { $('vocab-loading').textContent='Select a learner above to begin.'; return; }
+  if (!activeChild || !activeList) { $('vocab-loading').textContent='Select a learner and list above to begin.'; return; }
   try {
-    const res=await fetch('/api/words?child='+encodeURIComponent(activeChild)); const data=await res.json();
+    const res=await fetch('/api/words?child='+encodeURIComponent(activeChild)+'&list='+encodeURIComponent(activeList));
+    const data=await res.json();
     if (data.error) throw new Error(data.error);
     vocabPairs=data.pairs;
     $('vocab-loading').style.display='none'; $('vocab-content').style.display='block';
@@ -647,9 +681,10 @@ $('vocab-dispute').addEventListener('click', ()=>{
 //  VERB MODE
 // ══════════════════════════════════════════════════════
 async function loadVerbs() {
-  if (!activeChild) { $('verb-loading').textContent='Select a learner above to begin.'; return; }
+  if (!activeChild || !activeList) { $('verb-loading').textContent='Select a learner and list above to begin.'; return; }
   try {
-    const res=await fetch('/api/verbs?child='+encodeURIComponent(activeChild)); const data=await res.json();
+    const res=await fetch('/api/verbs?child='+encodeURIComponent(activeChild)+'&list='+encodeURIComponent(activeList));
+    const data=await res.json();
     if (data.error) throw new Error(data.error);
     verbsList=data.verbs;
     buildConjGrid();
@@ -853,12 +888,15 @@ async function addVocabWord() {
   if (!sp || !en) { st.textContent='Both fields required.'; st.className='add-status err show'; return; }
   try {
     $('add-vocab-btn').disabled=true;
-    const res=await fetch('/api/word?child='+encodeURIComponent(activeChild),{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({spanish:sp,english:en})});
+    const res=await fetch('/api/word?child='+encodeURIComponent(activeChild)+'&list='+encodeURIComponent(activeList),{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({spanish:sp,english:en})});
     const d=await res.json(); if(d.error) throw new Error(d.error);
     st.textContent=`Added "${sp}".`; st.className='add-status ok show';
     $('add-spanish').value=''; $('add-english').value='';
-    const r=await fetch('/api/words?child='+encodeURIComponent(activeChild)); const data=await r.json();
-    if (!data.error) { vocabPairs=data.pairs; buildVocabList(vocabPairs); }
+    // Update in-memory list immediately (avoids ES refresh delay)
+    const existing = vocabPairs.findIndex(p => p.spanish === sp);
+    if (existing >= 0) vocabPairs[existing] = { spanish: sp, english: en };
+    else vocabPairs.push({ spanish: sp, english: en });
+    buildVocabList(vocabPairs);
     setTimeout(()=>{st.className='add-status';},3000);
   } catch(err){st.textContent='Error: '+err.message;st.className='add-status err show';}
   finally{$('add-vocab-btn').disabled=false;}
@@ -875,12 +913,14 @@ async function addVerbEntry() {
   }
   try {
     $('add-verb-btn').disabled=true;
-    const res=await fetch('/api/verb?child='+encodeURIComponent(activeChild),{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(verb)});
+    const res=await fetch('/api/verb?child='+encodeURIComponent(activeChild)+'&list='+encodeURIComponent(activeList),{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(verb)});
     const d=await res.json(); if(d.error) throw new Error(d.error);
     st.textContent=`Added "${verb.infinitive}".`; st.className='add-status ok show';
     fields.forEach(f=>{const el=document.getElementById('av-'+f);if(el)el.value='';});
-    const r=await fetch('/api/verbs?child='+encodeURIComponent(activeChild)); const data=await r.json();
-    if(!data.error){ verbsList=data.verbs; buildVerbList(verbsList); }
+    // Update in-memory list immediately
+    const ei = verbsList.findIndex(v => v.infinitive === verb.infinitive);
+    if (ei >= 0) verbsList[ei] = verb; else verbsList.push({...verb});
+    buildVerbList(verbsList);
     setTimeout(()=>{st.className='add-status';},3000);
   } catch(err){st.textContent='Error: '+err.message;st.className='add-status err show';}
   finally{$('add-verb-btn').disabled=false;}
@@ -928,7 +968,7 @@ function buildVocabList(pairs, filter='') {
       const orig = row.dataset.orig;
       if (!confirm(`Delete "${orig}"?`)) return;
       try {
-        const r = await fetch('/api/word?child='+encodeURIComponent(activeChild)+'&spanish='+encodeURIComponent(orig), { method:'DELETE' });
+        const r = await fetch('/api/word?child='+encodeURIComponent(activeChild)+'&list='+encodeURIComponent(activeList)+'&spanish='+encodeURIComponent(orig), { method:'DELETE' });
         const d = await r.json(); if (d.error) throw new Error(d.error);
         vocabPairs = vocabPairs.filter(x => x.spanish !== orig);
         buildVocabList(vocabPairs, $('vocab-list-filter')?.value || '');
@@ -981,7 +1021,7 @@ function buildVerbList(verbs, filter='') {
     row.querySelector('.verb-row-header .btn-xs-del').addEventListener('click', async () => {
       if (!confirm(`Delete "${orig}"?`)) return;
       try {
-        const r = await fetch('/api/verb?child='+encodeURIComponent(activeChild)+'&infinitive='+encodeURIComponent(orig), { method:'DELETE' });
+        const r = await fetch('/api/verb?child='+encodeURIComponent(activeChild)+'&list='+encodeURIComponent(activeList)+'&infinitive='+encodeURIComponent(orig), { method:'DELETE' });
         const d = await r.json(); if(d.error) throw new Error(d.error);
         verbsList = verbsList.filter(v => v.infinitive !== orig);
         buildVerbList(verbsList, $('verb-list-filter')?.value || '');
@@ -1056,7 +1096,7 @@ function renderUpload(mode) {
     $('add-spanish').addEventListener('keydown', e=>{ if(e.key==='Enter') $('add-english').focus(); });
     $('add-english').addEventListener('keydown', e=>{ if(e.key==='Enter') addVocabWord(); });
     $('dl-vocab-btn').addEventListener('click', downloadVocab);
-    $('upload-btn').addEventListener('click',()=>doUpload('/api/upload-words?child='+encodeURIComponent(activeChild), async()=>{ await loadVocab(); buildVocabList(vocabPairs); }));
+    $('upload-btn').addEventListener('click',()=>doUpload('/api/upload-words?child='+encodeURIComponent(activeChild)+'&list='+encodeURIComponent(activeList), async()=>{ await loadVocab(); buildVocabList(vocabPairs); }));
   } else {
     const pLabels={infinitive:'Infinitive',english:'English',yo:'yo',tu:'tú',el:'él/ella/Ud.',nosotros:'nosotros',vosotros:'vosotros',ellos:'ellos/ellas'};
     const pFields=Object.entries(pLabels).map(([k,l])=>`
@@ -1102,7 +1142,7 @@ function renderUpload(mode) {
     $('verb-list-filter').addEventListener('input', e => buildVerbList(verbsList, e.target.value));
     $('add-verb-btn').addEventListener('click', addVerbEntry);
     $('dl-verbs-btn').addEventListener('click', downloadVerbs);
-    $('upload-btn').addEventListener('click',()=>doUpload('/api/upload?child='+encodeURIComponent(activeChild), async()=>{ await loadVerbs(); buildVerbList(verbsList); }));
+    $('upload-btn').addEventListener('click',()=>doUpload('/api/upload?child='+encodeURIComponent(activeChild)+'&list='+encodeURIComponent(activeList), async()=>{ await loadVerbs(); buildVerbList(verbsList); }));
   }
 }
 
@@ -1122,6 +1162,32 @@ async function doUpload(endpoint, reloader) {
   finally{$('upload-btn').disabled=false;$('upload-btn').textContent='Upload';}
 }
 
+// ── list selector ───────────────────────────────────────
+function updateDelListBtn() {
+  $('del-list-btn').style.display = allLists.length > 1 ? '' : 'none';
+}
+
+async function loadLists(childId) {
+  try {
+    const res=await fetch('/api/lists?child='+encodeURIComponent(childId)); const data=await res.json();
+    allLists=data.lists||[];
+    const sel=$('list-select'); sel.innerHTML='';
+    if (!allLists.length) { sel.innerHTML='<option value="">No lists</option>'; updateDelListBtn(); return; }
+    allLists.forEach(l=>{
+      const opt=document.createElement('option');
+      opt.value=l.id; opt.textContent=l.name;
+      if(l.id===activeList) opt.selected=true;
+      sel.appendChild(opt);
+    });
+    if (!activeList || !allLists.find(l=>l.id===activeList)) {
+      activeList=allLists[0].id;
+      localStorage.setItem('active-list', activeList);
+      sel.value=activeList;
+    }
+    updateDelListBtn();
+  } catch(err) { $('list-select').innerHTML='<option value="">Error</option>'; }
+}
+
 // ── child selector ──────────────────────────────────────
 async function loadChildren() {
   try {
@@ -1137,18 +1203,27 @@ async function loadChildren() {
       if(c.id===activeChild) opt.selected=true;
       sel.appendChild(opt);
     });
-    // If saved child not in list, fall back to first
     if (!activeChild || !data.children.find(c=>c.id===activeChild)) {
-      activeChild=data.children[0].id;
+      const child=data.children[0];
+      activeChild=child.id;
+      activeList=child.active_list_id||'';
       localStorage.setItem('active-child', activeChild);
+      localStorage.setItem('active-list', activeList);
       sel.value=activeChild;
+    } else {
+      // Restore active_list_id from server if not in localStorage
+      const child=data.children.find(c=>c.id===activeChild);
+      if (!activeList && child?.active_list_id) {
+        activeList=child.active_list_id;
+        localStorage.setItem('active-list', activeList);
+      }
     }
+    await loadLists(activeChild);
     initForChild();
   } catch(err) { $('child-select').innerHTML='<option value="">Error loading</option>'; }
 }
 
 function initForChild() {
-  // Reset state
   vocabPairs=[]; verbsList=[];
   sc=0;sw=0;tfCorrect=0;tfTotal=0;mastered=new Set();sessionTotal=0;firstTryCorrect=0;
   savedSession=null; dirSessions={};
@@ -1163,12 +1238,76 @@ function initForChild() {
   loadVerbs();
 }
 
-$('child-select').addEventListener('change', e => {
+$('child-select').addEventListener('change', async e => {
   activeChild = e.target.value;
+  activeList  = '';
   localStorage.setItem('active-child', activeChild);
+  localStorage.removeItem('active-list');
+  await loadLists(activeChild);
   initForChild();
 });
 
+$('list-select').addEventListener('change', e => {
+  activeList = e.target.value;
+  localStorage.setItem('active-list', activeList);
+  // Persist active list on server
+  fetch('/api/lists/active?child='+encodeURIComponent(activeChild), {
+    method:'PUT', headers:{'Content-Type':'application/json'}, body:JSON.stringify({listId:activeList})
+  }).catch(()=>{});
+  initForChild();
+});
+
+// ── delete list ─────────────────────────────────────────
+$('del-list-btn').addEventListener('click', async () => {
+  const listName = allLists.find(l=>l.id===activeList)?.name || activeList;
+  if (!confirm(`Delete list "${listName}" and all its words? This cannot be undone.`)) return;
+  try {
+    $('del-list-btn').disabled=true; $('del-list-btn').textContent='Deleting…';
+    const r=await fetch('/api/lists?child='+encodeURIComponent(activeChild)+'&list='+encodeURIComponent(activeList),{method:'DELETE'});
+    const d=await r.json(); if(d.error) throw new Error(d.error);
+    // Switch to first remaining list
+    allLists=allLists.filter(l=>l.id!==activeList);
+    activeList=allLists[0]?.id||'';
+    localStorage.setItem('active-list',activeList);
+    await loadLists(activeChild);
+    $('list-select').value=activeList;
+    initForChild();
+  } catch(err) { alert('Delete failed: '+err.message); }
+  finally { $('del-list-btn').disabled=false; $('del-list-btn').textContent='Delete List'; }
+});
+
+// ── new list ────────────────────────────────────────────
+$('add-list-btn').addEventListener('click', () => {
+  $('nl-name').value='';
+  document.querySelector('input[name="nl-mode"][value="blank"]').checked=true;
+  $('nl-status').className='new-child-status';
+  $('new-list-overlay').classList.remove('hidden');
+  $('nl-name').focus();
+});
+$('nl-cancel').addEventListener('click', () => $('new-list-overlay').classList.add('hidden'));
+$('nl-submit').addEventListener('click', async () => {
+  const name=$('nl-name').value.trim();
+  const mode=document.querySelector('input[name="nl-mode"]:checked')?.value||'blank';
+  const status=$('nl-status');
+  if (!name) { status.textContent='Name required.'; status.className='new-child-status err show'; return; }
+  $('nl-submit').disabled=true; $('nl-submit').textContent='Creating…';
+  try {
+    const body={ name, cloneFrom: mode==='clone' ? activeList : undefined };
+    const r=await fetch('/api/lists?child='+encodeURIComponent(activeChild),{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+    const d=await r.json(); if(d.error) throw new Error(d.error);
+    status.textContent=`Created "${name}"!`; status.className='new-child-status ok show';
+    setTimeout(async()=>{
+      $('new-list-overlay').classList.add('hidden');
+      activeList=d.id; localStorage.setItem('active-list',activeList);
+      await loadLists(activeChild);
+      $('list-select').value=activeList;
+      initForChild();
+    }, 600);
+  } catch(err) { status.textContent='Error: '+err.message; status.className='new-child-status err show'; }
+  finally { $('nl-submit').disabled=false; $('nl-submit').textContent='Create List'; }
+});
+
+// ── new child ────────────────────────────────────────────
 $('add-child-btn').addEventListener('click', () => {
   $('nc-name').value='';
   $('nc-vocab-file').value='';
@@ -1191,31 +1330,26 @@ $('nc-submit').addEventListener('click', async () => {
   if (!vocabFile) { status.textContent='Vocabulary file required.'; status.className='new-child-status err show'; return; }
   $('nc-submit').disabled=true; $('nc-submit').textContent='Creating…';
   try {
-    // Create child
     const cr=await fetch('/api/children',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name})});
     const cd=await cr.json(); if(cd.error) throw new Error(cd.error);
-    const childId=cd.id;
+    const childId=cd.id; const defList=cd.active_list_id;
 
-    // Upload vocab
     const vfd=new FormData(); vfd.append('file',vocabFile);
-    const vr=await fetch('/api/upload-words?child='+encodeURIComponent(childId),{method:'POST',body:vfd});
+    const vr=await fetch('/api/upload-words?child='+encodeURIComponent(childId)+'&list='+encodeURIComponent(defList),{method:'POST',body:vfd});
     const vd=await vr.json(); if(vd.error) throw new Error('Vocab: '+vd.error);
 
-    // Upload verbs if provided
     if (verbFile) {
       const bfd=new FormData(); bfd.append('file',verbFile);
-      const br=await fetch('/api/upload?child='+encodeURIComponent(childId),{method:'POST',body:bfd});
+      const br=await fetch('/api/upload?child='+encodeURIComponent(childId)+'&list='+encodeURIComponent(defList),{method:'POST',body:bfd});
       const bd=await br.json(); if(bd.error) throw new Error('Verbs: '+bd.error);
     }
 
     status.textContent=`Created ${name}! Loading…`; status.className='new-child-status ok show';
-    setTimeout(async ()=>{
+    setTimeout(async()=>{
       $('new-child-overlay').classList.add('hidden');
+      activeChild=childId; activeList=defList;
+      localStorage.setItem('active-child',childId); localStorage.setItem('active-list',defList);
       await loadChildren();
-      // Switch to new child
-      activeChild=childId; localStorage.setItem('active-child',childId);
-      $('child-select').value=childId;
-      initForChild();
     }, 800);
   } catch(err) { status.textContent='Error: '+err.message; status.className='new-child-status err show'; }
   finally { $('nc-submit').disabled=false; $('nc-submit').textContent='Create Child'; }

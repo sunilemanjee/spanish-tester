@@ -1,6 +1,6 @@
 {
   "index": "spanish_vocab",
-  "description": "Vocabulary word pairs scoped per child. One doc per word per child. _id = '{child_slug}_{word_slug}' for stable word-level upserts.",
+  "description": "Vocabulary word pairs scoped per child list. One doc per word per list. _id = '{list_id}_{word_slug}' for stable word-level upserts.",
   "settings": {
     "number_of_shards": 1,
     "number_of_replicas": 1
@@ -8,6 +8,7 @@
   "mappings": {
     "properties": {
       "child_id":   { "type": "keyword" },
+      "list_id":    { "type": "keyword" },
       "spanish":    { "type": "keyword" },
       "english":    { "type": "keyword" },
       "created_at": { "type": "date" },

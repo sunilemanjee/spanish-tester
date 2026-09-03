@@ -7,9 +7,10 @@
   },
   "mappings": {
     "properties": {
-      "name":        { "type": "keyword" },
-      "created_at":  { "type": "date" },
-      "last_active": { "type": "date" }
+      "name":           { "type": "keyword" },
+      "created_at":     { "type": "date" },
+      "last_active":    { "type": "date" },
+      "active_list_id": { "type": "keyword" }
     }
   }
 }
