@@ -1,0 +1,26 @@
+{
+  "index": "spanish_sessions",
+  "description": "Quiz session results per child/list. One doc per completed session.",
+  "mappings": {
+    "properties": {
+      "child_id":         { "type": "keyword" },
+      "list_id":          { "type": "keyword" },
+      "list_name":        { "type": "keyword" },
+      "mode":             { "type": "keyword" },
+      "completed_at":     { "type": "date" },
+      "total_words":      { "type": "integer" },
+      "first_try_correct":{ "type": "integer" },
+      "first_try_pct":    { "type": "float" },
+      "needed_retry":     { "type": "integer" },
+      "total_misses":     { "type": "integer" },
+      "retry_breakdown":  {
+        "type": "nested",
+        "properties": {
+          "word":    { "type": "keyword" },
+          "english": { "type": "keyword" },
+          "retries": { "type": "integer" }
+        }
+      }
+    }
+  }
+}

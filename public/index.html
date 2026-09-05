@@ -14,16 +14,16 @@
       --amber: #f0a030; --amber-bg: rgba(240,160,48,.1); --amber-border: rgba(240,160,48,.3);
       --text: #e8e8f0; --muted: #7878a0; --radius: 12px;
     }
-    body { background:var(--bg); color:var(--text); font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; min-height:100vh; display:flex; flex-direction:column; align-items:center; padding:24px 16px 48px; }
+    body { background:var(--bg); color:var(--text); font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; min-height:100vh; display:flex; flex-direction:column; align-items:center; padding:24px 32px 48px; }
 
-    header { width:100%; max-width:620px; display:flex; align-items:center; justify-content:space-between; margin-bottom:20px; }
+    header { width:100%; max-width:960px; display:flex; align-items:center; justify-content:space-between; margin-bottom:20px; }
     h1 { font-size:1.2rem; font-weight:700; letter-spacing:-.02em; }
     h1 span { color:var(--accent); }
     .app-tabs { display:flex; background:var(--surface2); border:1px solid var(--border); border-radius:8px; overflow:hidden; }
     .app-tab { padding:7px 18px; font-size:.82rem; font-weight:600; border:none; background:transparent; color:var(--muted); cursor:pointer; transition:all .15s; }
     .app-tab.active { background:var(--accent); color:#fff; }
 
-    .dir-row { width:100%; max-width:620px; display:flex; align-items:center; gap:10px; margin-bottom:16px; min-height:34px; flex-wrap:wrap; }
+    .dir-row { width:100%; max-width:960px; display:flex; align-items:center; gap:10px; margin-bottom:16px; min-height:34px; flex-wrap:wrap; }
     .dir-toggle { display:flex; background:var(--surface2); border:1px solid var(--border); border-radius:8px; overflow:hidden; }
     .dir-btn { padding:5px 14px; font-size:.78rem; font-weight:600; border:none; background:transparent; color:var(--muted); cursor:pointer; transition:all .15s; }
     .dir-btn.active { background:var(--surface); color:var(--text); }
@@ -33,7 +33,7 @@
     .clear-wrong { padding:4px 10px; font-size:.72rem; font-weight:600; border:1px solid var(--border); background:transparent; color:var(--muted); border-radius:6px; cursor:pointer; margin-left:auto; }
     .clear-wrong:hover { color:var(--red); border-color:var(--red-border); }
 
-    .score-bar { width:100%; max-width:620px; display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-bottom:16px; }
+    .score-bar { width:100%; max-width:960px; display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-bottom:16px; }
     .score-card { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:11px 10px; text-align:center; }
     .score-card .lbl { font-size:.63rem; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); margin-bottom:3px; }
     .score-card .val { font-size:1.45rem; font-weight:700; }
@@ -42,10 +42,10 @@
     .score-card.r .val { color:var(--accent); }
     .score-card.b .val { color:var(--amber); }
 
-    .prog-wrap { width:100%; max-width:620px; height:3px; background:var(--surface2); border-radius:2px; margin-bottom:18px; overflow:hidden; }
+    .prog-wrap { width:100%; max-width:960px; height:3px; background:var(--surface2); border-radius:2px; margin-bottom:18px; overflow:hidden; }
     .prog-fill { height:100%; background:var(--accent); border-radius:2px; transition:width .35s ease; width:0%; }
 
-    .quiz-card { width:100%; max-width:620px; background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:26px 28px 22px; margin-bottom:14px; }
+    .quiz-card { width:100%; max-width:960px; background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:26px 28px 22px; margin-bottom:14px; }
     .retry-banner { background:var(--amber-bg); border:1px solid var(--amber-border); color:var(--amber); font-size:.78rem; font-weight:600; padding:8px 13px; border-radius:8px; margin-bottom:16px; display:none; }
     .retry-banner.show { display:block; }
     .card-meta { font-size:.7rem; color:var(--muted); text-transform:uppercase; letter-spacing:.08em; margin-bottom:7px; }
@@ -89,7 +89,7 @@
     .btn-dispute { background:transparent; color:var(--amber); border:1.5px solid var(--amber-border); }
     .btn-dispute:hover { background:var(--amber-bg); }
 
-    .finish { width:100%; max-width:620px; background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:38px 32px; text-align:center; display:none; margin-bottom:14px; }
+    .finish { width:100%; max-width:960px; background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:38px 32px; text-align:center; display:none; margin-bottom:14px; }
     .finish.show { display:block; }
     .finish-emoji { font-size:2.8rem; margin-bottom:10px; }
     .finish h2 { font-size:1.6rem; font-weight:700; margin-bottom:4px; }
@@ -98,8 +98,27 @@
     .finish-fields { color:var(--muted); font-size:.8rem; margin-bottom:6px; }
     .finish-wrong-note { font-size:.82rem; color:var(--amber); margin-bottom:22px; }
     .finish-acts { display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
+    .history-session { border:1px solid var(--border); border-radius:8px; margin-bottom:8px; overflow:hidden; }
+    .history-session-header { display:grid; grid-template-columns:1fr auto auto auto auto; gap:12px; align-items:center; padding:10px 14px; background:var(--surface2); cursor:pointer; font-size:.82rem; }
+    .history-session-header:hover { background:rgba(255,255,255,.05); }
+    .history-date { color:var(--muted); font-size:.74rem; }
+    .history-pct { font-weight:700; color:var(--accent); }
+    .history-badge { font-size:.72rem; background:var(--surface); border:1px solid var(--border); border-radius:5px; padding:2px 7px; color:var(--muted); }
+    .history-detail { display:none; padding:12px 14px; font-size:.8rem; border-top:1px solid var(--border); }
+    .history-session.open .history-detail { display:block; }
+    .history-mini-table { width:100%; border-collapse:collapse; margin-top:8px; font-size:.78rem; }
+    .history-mini-table th { color:var(--muted); font-size:.68rem; text-transform:uppercase; letter-spacing:.05em; text-align:left; padding:3px 8px 5px; border-bottom:1px solid var(--border); }
+    .history-mini-table td { padding:4px 8px; border-bottom:1px solid rgba(255,255,255,.04); }
+    .history-mini-table tr:last-child td { border-bottom:none; }
+    .retry-report-title { font-size:.78rem; font-weight:700; text-transform:uppercase; letter-spacing:.07em; color:var(--muted); margin-bottom:10px; }
+    .retry-report-table { width:100%; border-collapse:collapse; font-size:.82rem; }
+    .retry-report-table th { text-align:left; color:var(--muted); font-size:.72rem; font-weight:700; text-transform:uppercase; letter-spacing:.05em; padding:4px 10px 6px; border-bottom:1px solid var(--border); }
+    .retry-report-table td { padding:5px 10px; border-bottom:1px solid rgba(255,255,255,.04); }
+    .retry-report-table tr:last-child td { border-bottom:none; }
+    .retry-report-table .retry-count { font-weight:700; color:var(--red); text-align:right; }
+    .retry-report-table tr:first-child .retry-count { color:var(--amber); }
 
-    .upload-section { width:100%; max-width:620px; }
+    .upload-section { width:100%; max-width:960px; }
     details.upload-card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:16px 20px; }
     details.upload-card summary { cursor:pointer; font-size:.81rem; font-weight:600; color:var(--muted); user-select:none; list-style:none; display:flex; align-items:center; gap:8px; }
     details.upload-card summary::before { content:'▶'; font-size:.57rem; transition:transform .15s; }
@@ -117,19 +136,23 @@
     .loading { color:var(--muted); text-align:center; padding:48px 0; font-size:.9rem; }
 
     /* child selector */
-    .child-bar { width:100%; max-width:620px; display:flex; align-items:center; gap:10px; margin-bottom:14px; flex-wrap:wrap; }
+    .child-bar { width:100%; max-width:960px; display:flex; align-items:center; gap:10px; margin-bottom:14px; flex-wrap:wrap; }
     .child-label { font-size:.78rem; color:var(--muted); font-weight:600; white-space:nowrap; }
     .child-select { background:var(--surface2); border:1.5px solid var(--border); color:var(--text); border-radius:8px; padding:6px 12px; font-size:.84rem; cursor:pointer; outline:none; flex:1; min-width:0; }
     .child-select:focus { border-color:var(--accent); }
 
     /* manage section */
-    .manage-card { width:100%; max-width:620px; background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:16px 20px; margin-bottom:10px; }
+    .manage-card { width:100%; max-width:960px; background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:16px 20px; margin-bottom:10px; }
     .manage-card summary { cursor:pointer; font-size:.81rem; font-weight:600; color:var(--muted); user-select:none; list-style:none; display:flex; align-items:center; gap:8px; }
     .manage-card summary::before { content:'▶'; font-size:.57rem; transition:transform .15s; }
     .manage-card[open] summary::before { transform:rotate(90deg); }
     .manage-body { margin-top:14px; display:flex; flex-direction:column; gap:14px; }
     .manage-row { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
     .manage-row .field-input { flex:1; min-width:120px; }
+    .add-word-row { display:flex; gap:6px; align-items:center; margin-bottom:4px; }
+    .add-word-row .field-input { flex:1; min-width:100px; }
+    .add-row-del { background:transparent; border:none; color:var(--muted); font-size:.9rem; cursor:pointer; padding:4px 6px; line-height:1; }
+    .add-row-del:hover { color:var(--red); }
     .manage-label { font-size:.72rem; color:var(--muted); font-weight:600; text-transform:uppercase; letter-spacing:.06em; margin-bottom:4px; }
     .add-status { font-size:.78rem; padding:6px 11px; border-radius:6px; display:none; }
     .add-status.show { display:block; }
@@ -147,8 +170,13 @@
     /* word list */
     .list-filter { width:100%; background:var(--surface2); border:1.5px solid var(--border); border-radius:8px; color:var(--text); font-size:.82rem; padding:6px 11px; outline:none; margin-bottom:8px; }
     .list-filter:focus { border-color:var(--accent); }
+    .list-toolbar { display:flex; align-items:center; gap:8px; margin-bottom:6px; min-height:24px; }
+    .list-toolbar label { font-size:.78rem; color:var(--muted); display:flex; align-items:center; gap:5px; cursor:pointer; user-select:none; }
+    .del-selected-btn { display:none; padding:3px 10px; font-size:.72rem; font-weight:700; border:1px solid var(--red-border); background:transparent; color:var(--red); border-radius:6px; cursor:pointer; margin-left:auto; }
+    .del-selected-btn.visible { display:block; }
     .word-list { max-height:320px; overflow-y:auto; display:flex; flex-direction:column; gap:4px; }
-    .word-row { display:grid; grid-template-columns:1fr 1fr auto auto; gap:6px; align-items:center; padding:5px 4px; border-radius:7px; transition:background .1s; }
+    .word-row { display:grid; grid-template-columns:auto 1fr 1fr auto auto; gap:6px; align-items:center; padding:5px 4px; border-radius:7px; transition:background .1s; }
+    .word-row input[type=checkbox] { width:14px; height:14px; cursor:pointer; accent-color:var(--accent); flex-shrink:0; }
     .word-row:hover { background:var(--surface2); }
     .word-row.dirty { background:rgba(124,106,247,.08); }
     .word-row .wi { background:var(--surface2); border:1.5px solid transparent; border-radius:6px; color:var(--text); font-size:.8rem; padding:5px 8px; outline:none; width:100%; }
@@ -159,12 +187,14 @@
     .word-row.dirty .btn-xs-save { display:block; }
     .btn-xs-del { background:transparent; color:var(--muted); border:1px solid transparent; }
     .btn-xs-del:hover { color:var(--red); border-color:var(--red-border); }
+    .manage-body input:disabled, .manage-body button:disabled { opacity:.45; cursor:not-allowed; }
     .list-empty { color:var(--muted); font-size:.8rem; text-align:center; padding:12px 0; }
 
     /* verb list */
     .verb-list { max-height:320px; overflow-y:auto; display:flex; flex-direction:column; gap:4px; }
     .verb-row { border-radius:7px; overflow:hidden; }
-    .verb-row-header { display:grid; grid-template-columns:1fr 1fr auto auto; gap:6px; align-items:center; padding:6px 4px; cursor:pointer; transition:background .1s; }
+    .verb-row-header { display:grid; grid-template-columns:auto 1fr 1fr auto auto; gap:6px; align-items:center; padding:6px 4px; cursor:pointer; transition:background .1s; }
+    .verb-row-header input[type=checkbox] { width:14px; height:14px; cursor:pointer; accent-color:var(--accent); flex-shrink:0; }
     .verb-row-header:hover { background:var(--surface2); }
     .verb-row.open .verb-row-header { background:var(--surface2); }
     .verb-row-label { font-size:.8rem; font-weight:600; }
@@ -291,7 +321,10 @@
   <div class="loading" id="vocab-loading">Loading vocabulary…</div>
   <div id="vocab-content" style="display:none">
     <div class="retry-banner" id="vocab-retry-banner"></div>
-    <div class="card-meta" id="vocab-meta"></div>
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:8px">
+      <div class="card-meta" id="vocab-meta"></div>
+      <button id="vocab-delete-word" title="Delete this word from list" style="background:transparent;border:none;color:var(--muted);font-size:.72rem;cursor:pointer;padding:2px 6px;border-radius:5px;white-space:nowrap;flex-shrink:0" onmouseover="this.style.color='var(--red)'" onmouseout="this.style.color='var(--muted)'">✕ delete word</button>
+    </div>
     <div class="card-word" id="vocab-word"></div>
     <div class="single-row">
       <input class="field-input" type="text" id="vocab-input" placeholder="Type translation…"
@@ -312,7 +345,10 @@
   <div class="loading" id="verb-loading">Loading verbs…</div>
   <div id="verb-content" style="display:none">
     <div class="retry-banner" id="verb-retry-banner"></div>
-    <div class="card-meta" id="verb-meta"></div>
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:8px">
+      <div class="card-meta" id="verb-meta"></div>
+      <button id="verb-delete-word" title="Delete this verb from list" style="background:transparent;border:none;color:var(--muted);font-size:.72rem;cursor:pointer;padding:2px 6px;border-radius:5px;white-space:nowrap;flex-shrink:0" onmouseover="this.style.color='var(--red)'" onmouseout="this.style.color='var(--muted)'">✕ delete verb</button>
+    </div>
     <div class="card-word" id="verb-word"></div>
     <div class="english-row">
       <div class="row-label">English meaning</div>
@@ -346,7 +382,10 @@
     <button class="btn btn-primary" id="restart-btn">Restart</button>
     <button class="btn btn-outline" id="fin-retry-btn" style="display:none">Retry Wrong (0)</button>
     <button class="btn btn-outline" id="resume-session-btn" style="display:none">↩ Resume Session</button>
+    <button class="btn btn-outline" id="fin-history-btn">📊 History</button>
   </div>
+  <div id="fin-retry-report" style="display:none;margin-top:24px;text-align:left;width:100%"></div>
+  <div id="fin-history-panel" style="display:none;margin-top:24px;text-align:left;width:100%"></div>
 </div>
 
 <div class="upload-section" id="upload-section"></div>
@@ -369,13 +408,16 @@ let allLists    = [];
 // ── state ──────────────────────────────────────────────
 let appMode = 'vocab', vocabDir = 'es-en';
 let vocabPairs = [], verbsList = [];
+let currentVocabPair = null, currentVerbPair = null;
 let queue = [], checked = false, isRetry = false;
 let sc = 0, sw = 0, tfCorrect = 0, tfTotal = 0;
 let mastered = new Set(), sessionTotal = 0, firstTryCorrect = 0;
+let sessionRetries = {}; // key → retry count for current session
 let lastWrongVocabPair = null, lastVocabWasFirst = false;
 let lastWrongVerb = null, lastVerbWasFirst = false;
 let savedSession = null;
 let dirSessions = {};
+let pendingVocabState = null, pendingVerbsState = null;
 
 const $ = id => document.getElementById(id);
 
@@ -415,6 +457,140 @@ function saveWrongVerb(verb, userAnswers) {
 }
 function removeWrongVerb(infinitive) {
   setWrong('verbs', getWrong('verbs').filter(x => x.verb.infinitive !== infinitive));
+}
+
+// ── quiz state persistence ──────────────────────────────
+let _qsSaveTimer = {};
+function scheduleStateSave(mode) {
+  clearTimeout(_qsSaveTimer[mode]);
+  _qsSaveTimer[mode] = setTimeout(() => persistQuizState(mode), 800);
+}
+function persistQuizState(mode) {
+  if (!activeChild || !activeList || !sessionTotal) return;
+  const ss = savedSession;
+  const body = {
+    child_id: activeChild, list_id: activeList, mode,
+    vocab_dir: vocabDir,
+    queue: [...queue],
+    mastered: [...mastered],
+    sw, first_try_correct: firstTryCorrect,
+    session_total: sessionTotal,
+    session_retries: {...sessionRetries},
+    is_retry: isRetry,
+    saved_session: ss ? {
+      mode: ss.mode, vocabDir: ss.vocabDir,
+      queue: [...ss.queue], mastered: [...ss.mastered],
+      sw: ss.sw, firstTryCorrect: ss.firstTryCorrect,
+      sessionTotal: ss.sessionTotal, isRetry: ss.isRetry,
+    } : null,
+  };
+  fetch('/api/quiz-state', {
+    method: 'PUT', headers: {'Content-Type':'application/json'},
+    body: JSON.stringify(body),
+  }).catch(()=>{});
+}
+function clearQuizState(mode) {
+  if (!activeChild || !activeList) return;
+  fetch('/api/quiz-state?child='+encodeURIComponent(activeChild)+'&list='+encodeURIComponent(activeList)+'&mode='+encodeURIComponent(mode), {method:'DELETE'}).catch(()=>{});
+}
+async function fetchQuizState(child, list, mode) {
+  try {
+    const r = await fetch('/api/quiz-state?child='+encodeURIComponent(child)+'&list='+encodeURIComponent(list)+'&mode='+encodeURIComponent(mode));
+    return await r.json();
+  } catch { return null; }
+}
+function showResumeBanner(containerId, state, applyFn, freshFn) {
+  const pct = state.session_total ? Math.round((state.mastered||[]).length / state.session_total * 100) : 0;
+  const q = (state.queue||[]).length, m = (state.mastered||[]).length;
+  $(containerId).innerHTML = `<div style="text-align:left;background:var(--amber-bg);border:1px solid var(--amber-border);border-radius:10px;padding:20px 22px"><div style="font-size:.9rem;font-weight:700;color:var(--amber);margin-bottom:6px">Resume previous session?</div><div style="font-size:.82rem;color:var(--text);margin-bottom:14px">${m} of ${state.session_total} mastered (${pct}%) · ${q} word${q!==1?'s':''} remaining</div><div style="display:flex;gap:10px"><button class="btn btn-primary" id="${containerId}-resume-do">Resume</button><button class="btn btn-outline" id="${containerId}-resume-fresh">Start Fresh</button></div></div>`;
+  document.getElementById(containerId+'-resume-do').addEventListener('click', applyFn);
+  document.getElementById(containerId+'-resume-fresh').addEventListener('click', freshFn);
+  $(containerId).style.display = '';
+}
+async function maybeStartVocab() {
+  if (!vocabPairs.length) return;
+  const state = await fetchQuizState(activeChild, activeList, 'vocab');
+  if (state && state.queue && state.queue.length > 0) {
+    const validQ = state.queue.filter(p => vocabPairs.some(vp => vp.spanish === p.spanish));
+    if (validQ.length > 0) {
+      pendingVocabState = {...state, queue: validQ};
+      $('vocab-content').style.display = 'none';
+      $('vocab-loading').style.display = '';
+      showResumeBanner('vocab-loading', pendingVocabState, applyVocabState, startVocabFresh);
+      return;
+    }
+  }
+  $('vocab-loading').style.display = 'none'; $('vocab-content').style.display = 'block';
+  startVocab();
+}
+async function maybeStartVerbs() {
+  if (!verbsList.length) return;
+  const state = await fetchQuizState(activeChild, activeList, 'verbs');
+  if (state && state.queue && state.queue.length > 0) {
+    const validQ = state.queue.filter(v => verbsList.some(vl => vl.infinitive === v.infinitive));
+    if (validQ.length > 0) {
+      pendingVerbsState = {...state, queue: validQ};
+      $('verb-content').style.display = 'none';
+      $('verb-loading').style.display = '';
+      showResumeBanner('verb-loading', pendingVerbsState, applyVerbState, startVerbsFresh);
+      return;
+    }
+  }
+  $('verb-loading').style.display = 'none'; $('verb-content').style.display = 'block';
+  startVerbs();
+}
+function applyVocabState() {
+  const state = pendingVocabState; pendingVocabState = null;
+  if (!state) return;
+  queue = state.queue;
+  mastered = new Set(state.mastered || []);
+  sw = state.sw || 0; firstTryCorrect = state.first_try_correct || 0;
+  sessionTotal = state.session_total || 0; sessionRetries = state.session_retries || {};
+  isRetry = !!state.is_retry;
+  savedSession = state.saved_session ? {
+    ...state.saved_session, mastered: new Set(state.saved_session.mastered || []),
+  } : null;
+  if (state.vocab_dir && state.vocab_dir !== vocabDir) {
+    vocabDir = state.vocab_dir;
+    $('dir-es-en').classList.toggle('active', vocabDir === 'es-en');
+    $('dir-en-es').classList.toggle('active', vocabDir === 'en-es');
+  }
+  checked = false;
+  $('vocab-loading').style.display = 'none'; $('vocab-content').style.display = 'block';
+  $('vocab-retry-banner').className = isRetry ? 'retry-banner show' : 'retry-banner';
+  if (isRetry) $('vocab-retry-banner').textContent = 'Reviewing wrong answers — must get all right';
+  $('finish-screen').classList.remove('show');
+  $('vocab-card').style.display = '';
+  updateScore(); updateRetryUI(); updateBackBtn(); showVocabWord();
+}
+function startVocabFresh() {
+  pendingVocabState = null; clearQuizState('vocab');
+  $('vocab-loading').style.display = 'none'; $('vocab-content').style.display = 'block';
+  startVocab();
+}
+function applyVerbState() {
+  const state = pendingVerbsState; pendingVerbsState = null;
+  if (!state) return;
+  queue = state.queue;
+  mastered = new Set(state.mastered || []);
+  sw = state.sw || 0; firstTryCorrect = state.first_try_correct || 0;
+  sessionTotal = state.session_total || 0; sessionRetries = state.session_retries || {};
+  isRetry = !!state.is_retry;
+  savedSession = state.saved_session ? {
+    ...state.saved_session, mastered: new Set(state.saved_session.mastered || []),
+  } : null;
+  checked = false;
+  $('verb-loading').style.display = 'none'; $('verb-content').style.display = 'block';
+  $('verb-retry-banner').className = isRetry ? 'retry-banner show' : 'retry-banner';
+  if (isRetry) $('verb-retry-banner').textContent = 'Reviewing wrong answers — must get all right';
+  $('finish-screen').classList.remove('show');
+  $('verb-card').style.display = '';
+  updateScore(); updateRetryUI(); updateBackBtn(); showVerbWord();
+}
+function startVerbsFresh() {
+  pendingVerbsState = null; clearQuizState('verbs');
+  $('verb-loading').style.display = 'none'; $('verb-content').style.display = 'block';
+  startVerbs();
 }
 
 // ── back-to-session button ─────────────────────────────
@@ -480,6 +656,7 @@ $('clear-wrong-btn').addEventListener('click', () => {
 });
 $('global-restart-btn').addEventListener('click', () => {
   setWrong(appMode, []);
+  clearQuizState(appMode);
   if (appMode==='vocab') startVocab(); else startVerbs();
 });
 
@@ -490,6 +667,22 @@ function saveBest(mode, pct) {
   const prev=parseFloat(getBest(mode)||'0');
   if (pct>prev) localStorage.setItem(bestKey(mode), pct.toFixed(1));
 }
+function syncQueueAfterVocabDelete(deletedSpanish) {
+  const before = queue.length;
+  queue = queue.filter(p => !deletedSpanish.includes(p.spanish));
+  const removed = before - queue.length;
+  sessionTotal = Math.max(0, sessionTotal - removed);
+  updateScore();
+}
+
+function syncQueueAfterVerbDelete(deletedInfinitives) {
+  const before = queue.length;
+  queue = queue.filter(p => !deletedInfinitives.includes(p.infinitive));
+  const removed = before - queue.length;
+  sessionTotal = Math.max(0, sessionTotal - removed);
+  updateScore();
+}
+
 function updateScore() {
   $('sc-c').textContent=mastered.size;
   $('sc-w').textContent=sw;
@@ -497,7 +690,8 @@ function updateScore() {
   $('sc-b').textContent=sessionTotal?firstTryCorrect+'/'+sessionTotal:'—';
   $('prog-fill').style.width=sessionTotal?(mastered.size/sessionTotal*100)+'%':'0%';
   // keep meta text live after each check (showVocabWord/showVerbWord also set it at word start)
-  const metaText=`Mastered ${mastered.size} of ${sessionTotal} — ${queue.length} in queue`;
+  const listName = allLists.find(l=>l.id===activeList)?.name || '';
+  const metaText=`Mastered ${mastered.size} of ${sessionTotal} — ${queue.length} in queue${listName ? '  ·  List: '+listName : ''}`;
   if (appMode==='vocab' && $('vocab-meta')) $('vocab-meta').textContent=metaText;
   if (appMode==='verbs' && $('verb-meta'))  $('verb-meta').textContent=metaText;
 }
@@ -513,8 +707,8 @@ function switchMode(mode) {
   $('finish-screen').classList.remove('show');
   sc=0;sw=0;tfCorrect=0;tfTotal=0;mastered=new Set();sessionTotal=0;firstTryCorrect=0;
   renderUpload(mode); updateRetryUI();
-  if (mode==='vocab'&&vocabPairs.length) startVocab();
-  if (mode==='verbs'&&verbsList.length)  startVerbs();
+  if (mode==='vocab'&&vocabPairs.length) maybeStartVocab();
+  if (mode==='verbs'&&verbsList.length)  maybeStartVerbs();
 }
 $('tab-vocab').addEventListener('click',()=>switchMode('vocab'));
 $('tab-verbs').addEventListener('click',()=>switchMode('verbs'));
@@ -529,16 +723,16 @@ async function loadVocab() {
     const data=await res.json();
     if (data.error) throw new Error(data.error);
     vocabPairs=data.pairs;
-    $('vocab-loading').style.display='none'; $('vocab-content').style.display='block';
     buildVocabList(vocabPairs);
-    if (appMode==='vocab') startVocab();
+    if (appMode==='vocab') { await maybeStartVocab(); }
+    else { $('vocab-loading').style.display='none'; $('vocab-content').style.display='block'; }
   } catch(err) { $('vocab-loading').textContent='Error: '+err.message; }
 }
 
 function startVocab(clearDirSessions=true) {
   savedSession=null; if(clearDirSessions) dirSessions={};
   sc=0;sw=0;checked=false;isRetry=false;
-  mastered=new Set();firstTryCorrect=0;
+  mastered=new Set();firstTryCorrect=0;sessionRetries={};
   queue=shuffle(vocabPairs);sessionTotal=queue.length;
   $('finish-screen').classList.remove('show');
   $('vocab-card').style.display='';
@@ -559,13 +753,16 @@ function startVocabRetry() {
   $('vocab-retry-banner').textContent=`Reviewing ${wrongs.length} wrong answer${wrongs.length>1?'s':('')} — must get all right`;
   $('vocab-retry-banner').className='retry-banner show';
   updateScore(); updateRetryUI(); updateBackBtn(); showVocabWord();
+  scheduleStateSave('vocab');
 }
 
 function showVocabWord() {
   if (!queue.length) { showFinish(); return; }
   checked=false;
   const pair=queue[0];
-  $('vocab-meta').textContent=`Mastered ${mastered.size} of ${sessionTotal} — ${queue.length} in queue`;
+  currentVocabPair=pair;
+  const _vListName = allLists.find(l=>l.id===activeList)?.name || '';
+  $('vocab-meta').textContent=`Mastered ${mastered.size} of ${sessionTotal} — ${queue.length} in queue${_vListName ? '  ·  List: '+_vListName : ''}`;
   $('vocab-word').textContent=vocabDir==='es-en'?pair.spanish:pair.english;
 
   lastWrongVocabPair=null;
@@ -606,21 +803,41 @@ function checkVocabWord() {
     $('vocab-feedback').textContent=`✗ Wrong. Answer: "${correct}" — you'll see this again`;
     $('vocab-feedback').className='feedback bad show';
     saveWrongVocab(pair, userAnswer);
+    sessionRetries[pair.spanish] = (sessionRetries[pair.spanish] || 0) + 1;
     queue.push(pair); // re-insert at end: must get it right to finish
     lastWrongVocabPair=pair; lastVocabWasFirst=wasFirstAttempt;
     $('vocab-dispute').style.display='';
   }
   $('vocab-next-row').style.display='flex';
   $('vocab-next').textContent=queue.length?'Next →':'All Done!';
-  updateScore(); updateRetryUI();
+  updateScore(); updateRetryUI(); scheduleStateSave('vocab');
 }
 
+$('vocab-delete-word').addEventListener('click', async () => {
+  const pair = currentVocabPair; if (!pair) return;
+  try {
+    const r = await fetch('/api/word?child='+encodeURIComponent(activeChild)+'&list='+encodeURIComponent(activeList)+'&spanish='+encodeURIComponent(pair.spanish), { method:'DELETE' });
+    const d = await r.json(); if (d.error) throw new Error(d.error);
+    vocabPairs = vocabPairs.filter(p => p.spanish !== pair.spanish);
+    queue = queue.filter(p => p.spanish !== pair.spanish);
+    mastered.delete(pair.spanish);
+    sessionTotal = Math.max(0, sessionTotal - 1);
+    currentVocabPair = null;
+    scheduleStateSave('vocab');
+    showVocabWord();
+  } catch(e) { alert('Delete failed: '+e.message); }
+});
 $('vocab-check').addEventListener('click', checkVocabWord);
 $('vocab-next').addEventListener('click', ()=>{ if (!queue.length) showFinish(); else showVocabWord(); });
 $('vocab-input').addEventListener('keydown', e=>{
-  if (e.key==='Enter') {
-    if (!checked) checkVocabWord();
-    else if ($('vocab-next-row').style.display!=='none') { if (!queue.length) showFinish(); else showVocabWord(); }
+  if (e.key==='Enter' && !checked) { e.stopPropagation(); checkVocabWord(); }
+});
+document.addEventListener('keydown', e=>{
+  if (e.key!=='Enter' || appMode!=='vocab') return;
+  if (e.target.tagName==='BUTTON') return;
+  if (!checked && e.target === $('vocab-input')) return; // handled by input listener
+  if (checked && $('vocab-next-row').style.display!=='none') {
+    if (!queue.length) showFinish(); else showVocabWord();
   }
 });
 function saveDirSession(dir) {
@@ -656,6 +873,7 @@ function switchDir(newDir) {
   } else {
     startVocab(false); // fresh for this dir, keep other dir sessions intact
   }
+  scheduleStateSave('vocab');
 }
 
 $('dir-es-en').addEventListener('click',()=>switchDir('es-en'));
@@ -674,7 +892,7 @@ $('vocab-dispute').addEventListener('click', ()=>{
   $('vocab-feedback').className='feedback ok show';
   $('vocab-input').classList.remove('bad'); $('vocab-input').classList.add('ok');
   $('vocab-next').textContent=queue.length?'Next →':'All Done!';
-  updateScore(); updateRetryUI();
+  updateScore(); updateRetryUI(); scheduleStateSave('vocab');
 });
 
 // ══════════════════════════════════════════════════════
@@ -688,9 +906,9 @@ async function loadVerbs() {
     if (data.error) throw new Error(data.error);
     verbsList=data.verbs;
     buildConjGrid();
-    $('verb-loading').style.display='none'; $('verb-content').style.display='block';
     buildVerbList(verbsList);
-    if (appMode==='verbs') startVerbs();
+    if (appMode==='verbs') { await maybeStartVerbs(); }
+    else { $('verb-loading').style.display='none'; $('verb-content').style.display='block'; }
   } catch(err) { $('verb-loading').textContent='Error: '+err.message; }
 }
 
@@ -722,7 +940,7 @@ function allVerbFields() {
 function startVerbs() {
   savedSession=null;
   sc=0;sw=0;tfCorrect=0;tfTotal=0;checked=false;isRetry=false;
-  mastered=new Set();firstTryCorrect=0;
+  mastered=new Set();firstTryCorrect=0;sessionRetries={};
   queue=shuffle(verbsList);sessionTotal=queue.length;
   $('finish-screen').classList.remove('show');
   $('verb-card').style.display='';
@@ -743,13 +961,16 @@ function startVerbRetry() {
   $('verb-retry-banner').textContent=`Reviewing ${wrongs.length} wrong verb${wrongs.length>1?'s':''} — must get all right`;
   $('verb-retry-banner').className='retry-banner show';
   updateScore(); updateRetryUI(); updateBackBtn(); showVerbWord();
+  scheduleStateSave('verbs');
 }
 
 function showVerbWord() {
   if (!queue.length) { showFinish(); return; }
   checked=false;
   const verb=queue[0];
-  $('verb-meta').textContent=`Mastered ${mastered.size} of ${sessionTotal} — ${queue.length} in queue`;
+  currentVerbPair=verb;
+  const _bListName = allLists.find(l=>l.id===activeList)?.name || '';
+  $('verb-meta').textContent=`Mastered ${mastered.size} of ${sessionTotal} — ${queue.length} in queue${_bListName ? '  ·  List: '+_bListName : ''}`;
   $('verb-word').textContent=verb.infinitive;
 
   allVerbFields().forEach(({inp,hint,pw})=>{
@@ -797,15 +1018,30 @@ function checkVerbWord() {
     $('verb-banner').textContent=`✗ ${ok} / ${total} fields correct — you'll see this again`;
     $('verb-banner').className='verb-banner bad show';
     saveWrongVerb(verb, userAnswers);
+    sessionRetries[verb.infinitive] = (sessionRetries[verb.infinitive] || 0) + 1;
     queue.push(verb); // re-insert at end
     lastWrongVerb=verb; lastVerbWasFirst=wasFirstAttempt;
     $('verb-dispute').style.display='';
   }
   $('verb-check').style.display='none'; $('verb-skip').style.display='none'; $('verb-next').style.display='';
   $('verb-next').focus();
-  updateScore(); updateRetryUI();
+  updateScore(); updateRetryUI(); scheduleStateSave('verbs');
 }
 
+$('verb-delete-word').addEventListener('click', async () => {
+  const verb = currentVerbPair; if (!verb) return;
+  try {
+    const r = await fetch('/api/verb?child='+encodeURIComponent(activeChild)+'&list='+encodeURIComponent(activeList)+'&infinitive='+encodeURIComponent(verb.infinitive), { method:'DELETE' });
+    const d = await r.json(); if (d.error) throw new Error(d.error);
+    verbsList = verbsList.filter(v => v.infinitive !== verb.infinitive);
+    queue = queue.filter(v => v.infinitive !== verb.infinitive);
+    mastered.delete(verb.infinitive);
+    sessionTotal = Math.max(0, sessionTotal - 1);
+    currentVerbPair = null;
+    scheduleStateSave('verbs');
+    showVerbWord();
+  } catch(e) { alert('Delete failed: '+e.message); }
+});
 $('verb-check').addEventListener('click', checkVerbWord);
 $('verb-next').addEventListener('click', showVerbWord);
 
@@ -821,7 +1057,7 @@ $('verb-dispute').addEventListener('click', ()=>{
   $('verb-banner').textContent='✓ Marked as correct!';
   $('verb-banner').className='verb-banner ok show';
   allVerbFields().forEach(({inp})=>{ inp.classList.remove('bad'); inp.classList.add('ok'); });
-  updateScore(); updateRetryUI();
+  updateScore(); updateRetryUI(); scheduleStateSave('verbs');
 });
 $('verb-skip').style.display='none'; // mastery mode: no skipping
 document.addEventListener('keydown', e=>{
@@ -846,6 +1082,51 @@ function showFinish() {
   $('fin-sub').textContent=`First try: ${firstTryCorrect} / ${total} (${firstPct}%)`;
   $('fin-fields').textContent=neededRetry>0?`Needed retesting: ${neededRetry} item${neededRetry>1?'s':''}  ·  Total misses: ${sw}`:'Perfect round — no retesting needed!';
   $('fin-wrong-note').textContent='';
+
+  // Save session to ES (fire and forget)
+  const retryBreakdown = Object.entries(sessionRetries)
+    .sort((a,b)=>b[1]-a[1])
+    .map(([word,retries]) => {
+      const english = appMode==='vocab'
+        ? (vocabPairs.find(p=>p.spanish===word)||{}).english||''
+        : (verbsList.find(v=>v.infinitive===word)||{}).english||'';
+      return { word, english, retries };
+    });
+  fetch('/api/sessions', {
+    method: 'POST', headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({
+      child_id: activeChild, list_id: activeList,
+      list_name: allLists.find(l=>l.id===activeList)?.name || '',
+      mode: appMode,
+      total_words: total, first_try_correct: firstTryCorrect,
+      first_try_pct: parseFloat(firstPct), needed_retry: neededRetry,
+      total_misses: sw, retry_breakdown: retryBreakdown,
+    })
+  }).catch(()=>{});
+  clearQuizState(appMode);
+
+  // Retry report
+  const reportEl = $('fin-retry-report');
+  const retryEntries = Object.entries(sessionRetries).sort((a,b)=>b[1]-a[1]);
+  if (retryEntries.length) {
+    const isVocab = appMode==='vocab';
+    const lookup = isVocab
+      ? Object.fromEntries(vocabPairs.map(p=>[p.spanish, p.english]))
+      : Object.fromEntries(verbsList.map(v=>[v.infinitive, v.english]));
+    const rows = retryEntries.map(([key, count]) =>
+      `<tr><td>${escHtml(key)}</td><td style="color:var(--muted)">${escHtml(lookup[key]||'')}</td><td class="retry-count">${count}</td></tr>`
+    ).join('');
+    reportEl.innerHTML = `
+      <div class="retry-report-title">Retry breakdown — ${retryEntries.length} word${retryEntries.length>1?'s':''} needed extra attempts</div>
+      <table class="retry-report-table">
+        <thead><tr><th>${isVocab?'Spanish':'Infinitive'}</th><th>English</th><th style="text-align:right">Retries</th></tr></thead>
+        <tbody>${rows}</tbody>
+      </table>`;
+    reportEl.style.display='';
+  } else {
+    reportEl.style.display='none';
+  }
+
   const resumeBtn=$('resume-session-btn');
   if (savedSession && savedSession.queue.length>0) {
     resumeBtn.style.display='';
@@ -855,9 +1136,43 @@ function showFinish() {
   updateScore(); updateRetryUI();
 }
 
-$('restart-btn').addEventListener('click', ()=>{ if (appMode==='vocab') startVocab(); else startVerbs(); });
+$('restart-btn').addEventListener('click', ()=>{ clearQuizState(appMode); if (appMode==='vocab') startVocab(); else startVerbs(); });
 
 $('resume-session-btn').addEventListener('click', resumeSavedSession);
+
+$('fin-history-btn').addEventListener('click', async () => {
+  const panel = $('fin-history-panel');
+  if (panel.style.display !== 'none') { panel.style.display='none'; return; }
+  panel.innerHTML = '<div style="color:var(--muted);font-size:.82rem">Loading history…</div>';
+  panel.style.display = '';
+  try {
+    const url = '/api/sessions?child='+encodeURIComponent(activeChild)+'&list='+encodeURIComponent(activeList)+'&size=50';
+    const sessions = await fetch(url).then(r=>r.json());
+    if (!sessions.length) { panel.innerHTML='<div style="color:var(--muted);font-size:.82rem">No sessions recorded yet for this list.</div>'; return; }
+    const modeLabel = s => s.mode==='vocab'?'Vocab':'Verbs';
+    panel.innerHTML = `<div class="retry-report-title" style="margin-bottom:12px">Session history — ${sessions.length} session${sessions.length>1?'s':''} for this list</div>` +
+      sessions.map((s,i) => {
+        const d = new Date(s.completed_at);
+        const dateStr = d.toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'})+' '+d.toLocaleTimeString(undefined,{hour:'2-digit',minute:'2-digit'});
+        const pct = s.first_try_pct != null ? s.first_try_pct.toFixed(0)+'%' : '—';
+        const breakdown = s.retry_breakdown?.length
+          ? `<table class="history-mini-table"><thead><tr><th>Word</th><th>English</th><th style="text-align:right">Retries</th></tr></thead><tbody>`+
+            s.retry_breakdown.map(r=>`<tr><td>${escHtml(r.word)}</td><td style="color:var(--muted)">${escHtml(r.english||'')}</td><td style="text-align:right;color:var(--red);font-weight:700">${r.retries}</td></tr>`).join('')+
+            `</tbody></table>`
+          : '<div style="color:var(--muted);font-size:.78rem;margin-top:6px">No retries — perfect session!</div>';
+        return `<div class="history-session" id="hs-${i}">
+          <div class="history-session-header" onclick="document.getElementById('hs-${i}').classList.toggle('open')">
+            <span>${dateStr}</span>
+            <span class="history-badge">${modeLabel(s)}</span>
+            <span class="history-badge">${s.total_words} words</span>
+            <span class="history-badge">1st try: ${s.first_try_correct}/${s.total_words}</span>
+            <span class="history-pct">${pct}</span>
+          </div>
+          <div class="history-detail">${breakdown}</div>
+        </div>`;
+      }).join('');
+  } catch(e) { panel.innerHTML='<div style="color:var(--red);font-size:.82rem">Error loading history: '+escHtml(e.message)+'</div>'; }
+});
 
 // ══════════════════════════════════════════════════════
 //  UPLOAD
@@ -881,25 +1196,70 @@ function triggerDownload(content, filename, type) {
 }
 
 // ── add single item ─────────────────────────────────────
-async function addVocabWord() {
-  const sp = $('add-spanish').value.trim();
-  const en = $('add-english').value.trim();
+function makeAddRow(autofocus) {
+  const row = document.createElement('div');
+  row.className = 'add-word-row';
+  row.innerHTML = `
+    <input class="field-input" type="text" placeholder="Spanish" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" data-role="sp">
+    <input class="field-input" type="text" placeholder="English" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" data-role="en">
+    <button class="add-row-del" title="Remove row">✕</button>`;
+  const spInp = row.querySelector('[data-role=sp]');
+  const enInp = row.querySelector('[data-role=en]');
+  row.querySelector('.add-row-del').addEventListener('click', () => {
+    const rows = $('add-word-rows');
+    if (rows.children.length > 1) row.remove(); else { spInp.value=''; enInp.value=''; spInp.focus(); }
+  });
+  spInp.addEventListener('keydown', e => { if(e.key==='Enter'||e.key==='Tab'&&!e.shiftKey){ e.preventDefault(); enInp.focus(); } });
+  enInp.addEventListener('keydown', e => {
+    if (e.key==='Enter') { e.preventDefault();
+      const rows = [...$('add-word-rows').children];
+      const next = rows[rows.indexOf(row)+1];
+      if (next) next.querySelector('[data-role=sp]').focus();
+      else { addWordRow(); $('add-word-rows').lastElementChild.querySelector('[data-role=sp]').focus(); }
+    }
+  });
+  if (autofocus) setTimeout(() => spInp.focus(), 0);
+  return row;
+}
+function addWordRow() { $('add-word-rows').appendChild(makeAddRow(false)); }
+
+async function addVocabWords() {
   const st = $('add-vocab-status');
-  if (!sp || !en) { st.textContent='Both fields required.'; st.className='add-status err show'; return; }
+  const btn = $('add-vocab-btn');
+  const addRowBtn = $('add-row-btn');
+  const rowEls = [...($('add-word-rows')?.children || [])];
+  const pairs = rowEls.map(row => ({
+    sp: row.querySelector('[data-role=sp]')?.value.trim() || '',
+    en: row.querySelector('[data-role=en]')?.value.trim() || '',
+    row,
+  })).filter(p => p.sp || p.en);
+  if (!pairs.length) { st.textContent='Enter at least one word.'; st.className='add-status err show'; return; }
+  const incomplete = pairs.find(p => !p.sp || !p.en);
+  if (incomplete) { st.textContent='Both Spanish and English required for each row.'; st.className='add-status err show'; return; }
   try {
-    $('add-vocab-btn').disabled=true;
-    const res=await fetch('/api/word?child='+encodeURIComponent(activeChild)+'&list='+encodeURIComponent(activeList),{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({spanish:sp,english:en})});
-    const d=await res.json(); if(d.error) throw new Error(d.error);
-    st.textContent=`Added "${sp}".`; st.className='add-status ok show';
-    $('add-spanish').value=''; $('add-english').value='';
-    // Update in-memory list immediately (avoids ES refresh delay)
-    const existing = vocabPairs.findIndex(p => p.spanish === sp);
-    if (existing >= 0) vocabPairs[existing] = { spanish: sp, english: en };
-    else vocabPairs.push({ spanish: sp, english: en });
+    btn.disabled=true; btn.textContent='Adding…'; addRowBtn.disabled=true;
+    rowEls.forEach(r => r.querySelectorAll('input').forEach(i => i.disabled=true));
+    await Promise.all(pairs.map(p =>
+      fetch('/api/word?child='+encodeURIComponent(activeChild)+'&list='+encodeURIComponent(activeList),
+        {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({spanish:p.sp,english:p.en})})
+        .then(r=>r.json()).then(d=>{ if(d.error) throw new Error(d.error); })
+    ));
+    pairs.forEach(p => {
+      const idx = vocabPairs.findIndex(x => x.spanish === p.sp);
+      if (idx >= 0) vocabPairs[idx] = { spanish: p.sp, english: p.en };
+      else vocabPairs.push({ spanish: p.sp, english: p.en });
+    });
+    st.textContent = pairs.length===1 ? `Added "${pairs[0].sp}".` : `Added ${pairs.length} words.`;
+    st.className='add-status ok show';
+    // clear rows back to one empty row
+    const container = $('add-word-rows');
+    container.innerHTML='';
+    container.appendChild(makeAddRow(false));
     buildVocabList(vocabPairs);
-    setTimeout(()=>{st.className='add-status';},3000);
-  } catch(err){st.textContent='Error: '+err.message;st.className='add-status err show';}
-  finally{$('add-vocab-btn').disabled=false;}
+    setTimeout(()=>{ st.className='add-status'; },3000);
+  } catch(err){ st.textContent='Error: '+err.message; st.className='add-status err show'; }
+  finally { btn.disabled=false; btn.textContent='Add All'; addRowBtn.disabled=false;
+    rowEls.forEach(r => r.querySelectorAll('input').forEach(i => i.disabled=false)); }
 }
 
 async function addVerbEntry() {
@@ -911,19 +1271,21 @@ async function addVerbEntry() {
     if(!v){st.textContent=`"${f}" required.`;st.className='add-status err show';return;}
     verb[f]=v;
   }
+  const btn=$('add-verb-btn');
+  const allInputs=fields.map(f=>document.getElementById('av-'+f)).filter(Boolean);
   try {
-    $('add-verb-btn').disabled=true;
+    btn.disabled=true; btn.textContent='Adding…';
+    allInputs.forEach(el=>{ el.disabled=true; });
     const res=await fetch('/api/verb?child='+encodeURIComponent(activeChild)+'&list='+encodeURIComponent(activeList),{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(verb)});
     const d=await res.json(); if(d.error) throw new Error(d.error);
     st.textContent=`Added "${verb.infinitive}".`; st.className='add-status ok show';
-    fields.forEach(f=>{const el=document.getElementById('av-'+f);if(el)el.value='';});
-    // Update in-memory list immediately
+    allInputs.forEach(el=>{ el.value=''; });
     const ei = verbsList.findIndex(v => v.infinitive === verb.infinitive);
     if (ei >= 0) verbsList[ei] = verb; else verbsList.push({...verb});
     buildVerbList(verbsList);
     setTimeout(()=>{st.className='add-status';},3000);
   } catch(err){st.textContent='Error: '+err.message;st.className='add-status err show';}
-  finally{$('add-verb-btn').disabled=false;}
+  finally{btn.disabled=false; btn.textContent='Add Verb'; allInputs.forEach(el=>{ el.disabled=false; }); allInputs[0]?.focus();}
 }
 
 // ── word list renderer ──────────────────────────────────
@@ -936,29 +1298,76 @@ function buildVocabList(pairs, filter='') {
   $('vocab-list-count').textContent = `${visible.length} of ${pairs.length} words`;
   container.innerHTML = visible.map((p, i) => `
     <div class="word-row" data-orig="${escHtml(p.spanish)}" id="vrow-${i}">
+      <input type="checkbox" class="row-cb" data-key="${escHtml(p.spanish)}">
       <input class="wi" type="text" value="${escHtml(p.spanish)}" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" data-field="spanish">
       <input class="wi" type="text" value="${escHtml(p.english)}" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" data-field="english">
       <button class="btn-xs btn-xs-save">Save</button>
       <button class="btn-xs btn-xs-del" title="Delete">✕</button>
     </div>`).join('');
 
+  const selectAllCb = $('vocab-select-all');
+  const delSelBtn   = $('vocab-del-selected');
+  if (selectAllCb) selectAllCb.checked = false;
+  if (delSelBtn) { delSelBtn.classList.remove('visible'); delSelBtn.textContent = 'Delete selected'; }
+
+  function syncToolbar() {
+    const cbs = container.querySelectorAll('.row-cb');
+    const checked = [...cbs].filter(c=>c.checked);
+    if (selectAllCb) selectAllCb.checked = checked.length === cbs.length && cbs.length > 0;
+    if (delSelBtn) {
+      if (checked.length > 0) {
+        delSelBtn.textContent = `Delete ${checked.length} selected`;
+        delSelBtn.classList.add('visible');
+      } else {
+        delSelBtn.classList.remove('visible');
+      }
+    }
+  }
+
+  if (selectAllCb) {
+    selectAllCb.checked = false;
+    selectAllCb.onchange = () => {
+      container.querySelectorAll('.row-cb').forEach(cb => cb.checked = selectAllCb.checked);
+      syncToolbar();
+    };
+  }
+
+  if (delSelBtn) {
+    delSelBtn.onclick = async () => {
+      const checked = [...container.querySelectorAll('.row-cb:checked')];
+      if (!checked.length) return;
+      const words = checked.map(cb => cb.dataset.key);
+      if (!confirm(`Delete ${words.length} word${words.length>1?'s':''}?`)) return;
+      delSelBtn.disabled = true;
+      try {
+        await Promise.all(words.map(w =>
+          fetch('/api/word?child='+encodeURIComponent(activeChild)+'&list='+encodeURIComponent(activeList)+'&spanish='+encodeURIComponent(w), { method:'DELETE' })
+        ));
+        vocabPairs = vocabPairs.filter(x => !words.includes(x.spanish));
+        delSelBtn.disabled = false;
+        syncQueueAfterVocabDelete(words);
+        buildVocabList(vocabPairs, $('vocab-list-filter')?.value || '');
+      } catch(e) { alert('Delete failed: '+e.message); delSelBtn.disabled = false; }
+    };
+  }
+
   container.querySelectorAll('.word-row').forEach(row => {
-    const inputs = row.querySelectorAll('input');
-    inputs.forEach(inp => inp.addEventListener('input', () => row.classList.add('dirty')));
+    row.querySelector('.row-cb').addEventListener('change', syncToolbar);
+    const textInputs = row.querySelectorAll('.wi');
+    textInputs.forEach(inp => inp.addEventListener('input', () => row.classList.add('dirty')));
     row.querySelector('.btn-xs-save').addEventListener('click', async () => {
       const orig = row.dataset.orig;
-      const sp   = row.querySelectorAll('input')[0].value.trim();
-      const en   = row.querySelectorAll('input')[1].value.trim();
+      const sp   = row.querySelectorAll('.wi')[0].value.trim();
+      const en   = row.querySelectorAll('.wi')[1].value.trim();
       if (!sp || !en) return;
       try {
-        const r = await fetch('/api/word?child='+encodeURIComponent(activeChild), {
+        const r = await fetch('/api/word?child='+encodeURIComponent(activeChild)+'&list='+encodeURIComponent(activeList), {
           method:'PUT', headers:{'Content-Type':'application/json'},
           body: JSON.stringify({ originalSpanish: orig, spanish: sp, english: en })
         });
         const d = await r.json(); if (d.error) throw new Error(d.error);
         row.dataset.orig = sp;
         row.classList.remove('dirty');
-        // update in-memory list
         const idx = vocabPairs.findIndex(x => x.spanish === orig);
         if (idx >= 0) vocabPairs[idx] = { spanish: sp, english: en };
         else vocabPairs.push({ spanish: sp, english: en });
@@ -971,6 +1380,7 @@ function buildVocabList(pairs, filter='') {
         const r = await fetch('/api/word?child='+encodeURIComponent(activeChild)+'&list='+encodeURIComponent(activeList)+'&spanish='+encodeURIComponent(orig), { method:'DELETE' });
         const d = await r.json(); if (d.error) throw new Error(d.error);
         vocabPairs = vocabPairs.filter(x => x.spanish !== orig);
+        syncQueueAfterVocabDelete([orig]);
         buildVocabList(vocabPairs, $('vocab-list-filter')?.value || '');
       } catch(e) { alert('Delete failed: '+e.message); }
     });
@@ -992,6 +1402,7 @@ function buildVerbList(verbs, filter='') {
   container.innerHTML = visible.map((v, i) => `
     <div class="verb-row" id="verb-row-${i}">
       <div class="verb-row-header">
+        <input type="checkbox" class="row-cb" data-key="${escHtml(v.infinitive)}">
         <span class="verb-row-label">${escHtml(v.infinitive)}</span>
         <span class="verb-row-en">${escHtml(v.english)}</span>
         <button class="btn-xs btn-xs-save" style="display:block">Edit</button>
@@ -1012,7 +1423,54 @@ function buildVerbList(verbs, filter='') {
       </div>
     </div>`).join('');
 
+  const vSelectAllCb = $('verb-select-all');
+  const vDelSelBtn   = $('verb-del-selected');
+  if (vSelectAllCb) vSelectAllCb.checked = false;
+  if (vDelSelBtn) { vDelSelBtn.classList.remove('visible'); vDelSelBtn.textContent = 'Delete selected'; }
+
+  function syncVerbToolbar() {
+    const cbs = container.querySelectorAll('.row-cb');
+    const checked = [...cbs].filter(c=>c.checked);
+    if (vSelectAllCb) vSelectAllCb.checked = checked.length === cbs.length && cbs.length > 0;
+    if (vDelSelBtn) {
+      if (checked.length > 0) {
+        vDelSelBtn.textContent = `Delete ${checked.length} selected`;
+        vDelSelBtn.classList.add('visible');
+      } else {
+        vDelSelBtn.classList.remove('visible');
+      }
+    }
+  }
+
+  if (vSelectAllCb) {
+    vSelectAllCb.checked = false;
+    vSelectAllCb.onchange = () => {
+      container.querySelectorAll('.row-cb').forEach(cb => cb.checked = vSelectAllCb.checked);
+      syncVerbToolbar();
+    };
+  }
+
+  if (vDelSelBtn) {
+    vDelSelBtn.onclick = async () => {
+      const checked = [...container.querySelectorAll('.row-cb:checked')];
+      if (!checked.length) return;
+      const infinitives = checked.map(cb => cb.dataset.key);
+      if (!confirm(`Delete ${infinitives.length} verb${infinitives.length>1?'s':''}?`)) return;
+      vDelSelBtn.disabled = true;
+      try {
+        await Promise.all(infinitives.map(inf =>
+          fetch('/api/verb?child='+encodeURIComponent(activeChild)+'&list='+encodeURIComponent(activeList)+'&infinitive='+encodeURIComponent(inf), { method:'DELETE' })
+        ));
+        verbsList = verbsList.filter(v => !infinitives.includes(v.infinitive));
+        vDelSelBtn.disabled = false;
+        syncQueueAfterVerbDelete(infinitives);
+        buildVerbList(verbsList, $('verb-list-filter')?.value || '');
+      } catch(e) { alert('Delete failed: '+e.message); vDelSelBtn.disabled = false; }
+    };
+  }
+
   container.querySelectorAll('.verb-row').forEach((row, i) => {
+    row.querySelector('.row-cb').addEventListener('change', syncVerbToolbar);
     const orig = visible[i].infinitive;
     row.querySelector('.verb-row-header .btn-xs-save').addEventListener('click', () => {
       row.classList.toggle('open');
@@ -1024,6 +1482,7 @@ function buildVerbList(verbs, filter='') {
         const r = await fetch('/api/verb?child='+encodeURIComponent(activeChild)+'&list='+encodeURIComponent(activeList)+'&infinitive='+encodeURIComponent(orig), { method:'DELETE' });
         const d = await r.json(); if(d.error) throw new Error(d.error);
         verbsList = verbsList.filter(v => v.infinitive !== orig);
+        syncQueueAfterVerbDelete([orig]);
         buildVerbList(verbsList, $('verb-list-filter')?.value || '');
       } catch(e) { alert('Delete failed: '+e.message); }
     });
@@ -1059,16 +1518,20 @@ function renderUpload(mode) {
     <div>
       <div class="manage-label">Current words</div>
       <input class="list-filter" type="text" id="vocab-list-filter" placeholder="Filter words…" autocomplete="off" spellcheck="false">
-      <div class="list-count" id="vocab-list-count"></div>
+      <div class="list-toolbar">
+        <label><input type="checkbox" id="vocab-select-all"> Select all</label>
+        <span class="list-count" id="vocab-list-count"></span>
+        <button class="del-selected-btn" id="vocab-del-selected">Delete selected</button>
+      </div>
       <div class="word-list" id="vocab-word-list"></div>
     </div>
     <hr class="divider">
     <div>
-      <div class="manage-label">Add a word</div>
-      <div class="manage-row">
-        <input class="field-input" type="text" id="add-spanish" placeholder="Spanish" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
-        <input class="field-input" type="text" id="add-english" placeholder="English" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
-        <button class="btn-sm btn-sm-primary" id="add-vocab-btn">Add</button>
+      <div class="manage-label">Add words</div>
+      <div id="add-word-rows"></div>
+      <div style="display:flex;gap:8px;margin-top:6px;align-items:center">
+        <button class="btn-sm btn-sm-outline" id="add-row-btn">+ Row</button>
+        <button class="btn-sm btn-sm-primary" id="add-vocab-btn">Add All</button>
       </div>
       <div class="add-status" id="add-vocab-status"></div>
     </div>
@@ -1092,9 +1555,9 @@ function renderUpload(mode) {
     // Build list immediately (data may already be loaded)
     if (vocabPairs.length) buildVocabList(vocabPairs);
     $('vocab-list-filter').addEventListener('input', e => buildVocabList(vocabPairs, e.target.value));
-    $('add-vocab-btn').addEventListener('click', addVocabWord);
-    $('add-spanish').addEventListener('keydown', e=>{ if(e.key==='Enter') $('add-english').focus(); });
-    $('add-english').addEventListener('keydown', e=>{ if(e.key==='Enter') addVocabWord(); });
+    $('add-word-rows').appendChild(makeAddRow(false));
+    $('add-row-btn').addEventListener('click', () => { addWordRow(); $('add-word-rows').lastElementChild.querySelector('[data-role=sp]').focus(); });
+    $('add-vocab-btn').addEventListener('click', addVocabWords);
     $('dl-vocab-btn').addEventListener('click', downloadVocab);
     $('upload-btn').addEventListener('click',()=>doUpload('/api/upload-words?child='+encodeURIComponent(activeChild)+'&list='+encodeURIComponent(activeList), async()=>{ await loadVocab(); buildVocabList(vocabPairs); }));
   } else {
@@ -1111,7 +1574,11 @@ function renderUpload(mode) {
     <div>
       <div class="manage-label">Current verbs</div>
       <input class="list-filter" type="text" id="verb-list-filter" placeholder="Filter verbs…" autocomplete="off" spellcheck="false">
-      <div class="list-count" id="verb-list-count"></div>
+      <div class="list-toolbar">
+        <label><input type="checkbox" id="verb-select-all"> Select all</label>
+        <span class="list-count" id="verb-list-count"></span>
+        <button class="del-selected-btn" id="verb-del-selected">Delete selected</button>
+      </div>
       <div class="verb-list" id="verb-list-container"></div>
     </div>
     <hr class="divider">
@@ -1226,7 +1693,7 @@ async function loadChildren() {
 function initForChild() {
   vocabPairs=[]; verbsList=[];
   sc=0;sw=0;tfCorrect=0;tfTotal=0;mastered=new Set();sessionTotal=0;firstTryCorrect=0;
-  savedSession=null; dirSessions={};
+  savedSession=null; dirSessions={}; pendingVocabState=null; pendingVerbsState=null;
   $('vocab-loading').style.display=''; $('vocab-loading').textContent='Loading vocabulary…';
   $('vocab-content').style.display='none';
   $('verb-loading').style.display=''; $('verb-loading').textContent='Loading verbs…';

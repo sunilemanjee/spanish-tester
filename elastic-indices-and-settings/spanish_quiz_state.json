@@ -1,0 +1,20 @@
+{
+  "index": "spanish_quiz_state",
+  "mappings": {
+    "properties": {
+      "child_id":        { "type": "keyword" },
+      "list_id":         { "type": "keyword" },
+      "mode":            { "type": "keyword" },
+      "vocab_dir":       { "type": "keyword" },
+      "queue":           { "type": "object", "enabled": false },
+      "mastered":        { "type": "keyword" },
+      "sw":              { "type": "integer" },
+      "first_try_correct": { "type": "integer" },
+      "session_total":   { "type": "integer" },
+      "session_retries": { "type": "object", "enabled": false },
+      "is_retry":        { "type": "boolean" },
+      "saved_session":   { "type": "object", "enabled": false },
+      "updated_at":      { "type": "date" }
+    }
+  }
+}

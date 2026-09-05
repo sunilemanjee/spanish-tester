@@ -20,6 +20,8 @@ const DEFINITIONS = [
   'spanish_lists.json',
   'spanish_vocab.json',
   'spanish_verbs.json',
+  'spanish_sessions.json',
+  'spanish_quiz_state.json',
 ].map(f => JSON.parse(fs.readFileSync(path.join(__dirname, f), 'utf8')));
 
 async function run() {

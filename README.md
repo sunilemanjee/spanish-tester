@@ -51,7 +51,7 @@ API_KEY=<your-api-key>
 node elastic-indices-and-settings/create-indices.js
 ```
 
-This creates the three indices (`spanish_children`, `spanish_vocab`, `spanish_verbs`) using the mappings and settings defined in `elastic-indices-and-settings/`. Safe to re-run — skips indices that already exist.
+This creates all five indices using the mappings defined in `elastic-indices-and-settings/`. Safe to re-run — skips indices that already exist.
 
 To **delete and recreate** all indices (destructive — clears all data):
 
@@ -81,11 +81,19 @@ All definitions live in `elastic-indices-and-settings/`:
 
 | File | Index | Description |
 |------|-------|-------------|
-| `spanish_children.json` | `spanish_children` | Child registry. `_id = child_slug` (e.g. `saifan`). |
-| `spanish_vocab.json` | `spanish_vocab` | Vocab word pairs per child. `_id = {child_slug}_{word_slug}`. |
-| `spanish_verbs.json` | `spanish_verbs` | Verb conjugation data per child. `_id = {child_slug}_{infinitive_slug}`. |
+| `spanish_children.json` | `spanish_children` | Child (learner) registry. `_id = child_slug` (e.g. `saifan`). |
+| `spanish_lists.json` | `spanish_lists` | Named word lists per child. `_id = {child_slug}_{list_slug}`. |
+| `spanish_vocab.json` | `spanish_vocab` | Vocab word pairs scoped per child + list. `_id = {list_id}_{word_slug}`. |
+| `spanish_verbs.json` | `spanish_verbs` | Verb conjugation data scoped per child + list. `_id = {list_id}_{infinitive_slug}`. |
+| `spanish_sessions.json` | `spanish_sessions` | Quiz session results (score, first-try %, retry breakdown) per child + list. Auto-saved at end of every session. |
 
-The `_id` pattern enables word-level upserts without rewriting the full word set.
+The `_id` scheme enables stable word-level upserts. `spanish_sessions` has no fixed `_id` — each session is a new doc.
+
+To recreate a fresh cluster from scratch, run in order:
+```bash
+node elastic-indices-and-settings/create-indices.js   # create all 5 indices
+node setup-es.js                                       # seed Saifan's default data
+```
 
 ## Custom word lists
 

@@ -45,6 +45,7 @@ async function setup() {
   await createIndex('spanish_lists.json');
   await createIndex('spanish_vocab.json');
   await createIndex('spanish_verbs.json');
+  await createIndex('spanish_sessions.json');
 
   // Ensure list_id mapping on existing indices
   await ensureListIdMapping(VOCAB_INDEX);

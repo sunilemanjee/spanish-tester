@@ -9,10 +9,12 @@ const PORT   = 3000;
 const UPLOADS_DIR = path.join(__dirname, 'uploads');
 const upload  = multer({ dest: UPLOADS_DIR });
 
-const VOCAB_INDEX    = 'spanish_vocab';
-const VERBS_INDEX    = 'spanish_verbs';
-const CHILDREN_INDEX = 'spanish_children';
-const LISTS_INDEX    = 'spanish_lists';
+const VOCAB_INDEX      = 'spanish_vocab';
+const VERBS_INDEX      = 'spanish_verbs';
+const CHILDREN_INDEX   = 'spanish_children';
+const LISTS_INDEX      = 'spanish_lists';
+const SESSIONS_INDEX   = 'spanish_sessions';
+const QUIZ_STATE_INDEX = 'spanish_quiz_state';
 
 app.use(express.static('public'));
 app.use(express.json());
@@ -79,11 +81,11 @@ app.post('/api/children', async (req, res) => {
   const defList = `${id}_default`;
   try {
     await client.index({
-      index: CHILDREN_INDEX, id,
+      index: CHILDREN_INDEX, id, refresh: 'wait_for',
       document: { name: name.trim(), created_at: now, last_active: now, active_list_id: defList },
     });
     await client.index({
-      index: LISTS_INDEX, id: defList,
+      index: LISTS_INDEX, id: defList, refresh: 'wait_for',
       document: { child_id: id, name: 'Default', created_at: now },
     });
     res.json({ id, name: name.trim(), active_list_id: defList });
@@ -380,6 +382,87 @@ app.post('/api/upload', upload.single('file'), async (req, res) => {
   } catch (err) {
     try { fs.unlinkSync(req.file.path); } catch (_) {}
     res.status(400).json({ error: err.message });
+  }
+});
+
+// ── Sessions ──────────────────────────────────────────────
+app.post('/api/sessions', async (req, res) => {
+  try {
+    const { child_id, list_id, list_name, mode, total_words, first_try_correct,
+            first_try_pct, needed_retry, total_misses, retry_breakdown } = req.body;
+    if (!child_id || !list_id || !mode) return res.status(400).json({ error: 'child_id, list_id, mode required' });
+    const doc = {
+      child_id, list_id, list_name: list_name || '', mode,
+      completed_at: new Date().toISOString(),
+      total_words: total_words || 0,
+      first_try_correct: first_try_correct || 0,
+      first_try_pct: first_try_pct || 0,
+      needed_retry: needed_retry || 0,
+      total_misses: total_misses || 0,
+      retry_breakdown: Array.isArray(retry_breakdown) ? retry_breakdown : [],
+    };
+    // ensure index exists (serverless auto-creates on first doc)
+    const result = await client.index({ index: SESSIONS_INDEX, document: doc, refresh: 'wait_for' });
+    res.json({ id: result._id });
+  } catch (err) { res.status(500).json({ error: err.message }); }
+});
+
+app.get('/api/sessions', async (req, res) => {
+  const { child, list, size = 50 } = req.query;
+  if (!child) return res.status(400).json({ error: 'child required' });
+  try {
+    const must = [{ term: { child_id: child } }];
+    if (list) must.push({ term: { list_id: list } });
+    const result = await client.search({
+      index: SESSIONS_INDEX,
+      query: { bool: { must } },
+      sort: [{ completed_at: { order: 'desc' } }],
+      size: Math.min(parseInt(size) || 50, 200),
+    });
+    res.json(result.hits.hits.map(h => ({ id: h._id, ...h._source })));
+  } catch (err) {
+    if (err.meta?.statusCode === 404) return res.json([]); // index not yet created
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// ── Quiz State ────────────────────────────────────────────
+function quizStateId(child, list, mode) { return `${child}_${list}_${mode}`; }
+
+app.get('/api/quiz-state', async (req, res) => {
+  const { child, list, mode } = req.query;
+  if (!child || !list || !mode) return res.status(400).json({ error: 'child, list, mode required' });
+  try {
+    const doc = await client.get({ index: QUIZ_STATE_INDEX, id: quizStateId(child, list, mode) });
+    res.json(doc._source);
+  } catch (err) {
+    if (err.meta?.statusCode === 404) return res.json(null);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.put('/api/quiz-state', async (req, res) => {
+  const { child_id, list_id, mode } = req.body;
+  if (!child_id || !list_id || !mode) return res.status(400).json({ error: 'child_id, list_id, mode required' });
+  try {
+    await client.index({
+      index: QUIZ_STATE_INDEX,
+      id: quizStateId(child_id, list_id, mode),
+      document: { ...req.body, updated_at: new Date().toISOString() },
+    });
+    res.json({ success: true });
+  } catch (err) { res.status(500).json({ error: err.message }); }
+});
+
+app.delete('/api/quiz-state', async (req, res) => {
+  const { child, list, mode } = req.query;
+  if (!child || !list || !mode) return res.status(400).json({ error: 'child, list, mode required' });
+  try {
+    await client.delete({ index: QUIZ_STATE_INDEX, id: quizStateId(child, list, mode) });
+    res.json({ success: true });
+  } catch (err) {
+    if (err.meta?.statusCode === 404) return res.json({ success: true });
+    res.status(500).json({ error: err.message });
   }
 });
 
